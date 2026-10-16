@@ -9,11 +9,12 @@
       "version": "1.0.0",
       "description": "查一个 GitHub 仓库最近怎么样：star/issue 数、最近几次提交、最新 issue 标题、最后推送时间（公开 API，不需要 Key）",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/gh-activity",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "工具"
       ],
       "capabilities": [
         "tools",
@@ -36,11 +37,12 @@
       "version": "1.0.0",
       "description": "查一个城市现在的天气与未来三天（最高/最低温、降水概率、天气现象），走 Open-Meteo 公开接口，不需要 Key",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/weather",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "生活"
       ],
       "capabilities": [
         "tools",
@@ -63,11 +65,12 @@
       "version": "1.0.0",
       "description": "把一句话或一小段文本翻成另一种语言（中/英/日/韩互译），走 MyMemory 公开接口，不需要 Key",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/translate",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "生活"
       ],
       "capabilities": [
         "tools",
@@ -90,11 +93,12 @@
       "version": "1.0.0",
       "description": "抓 V2EX 或 Hacker News 的热帖榜，整理成标题+链接+热度几行，两个源都不需要 Key",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/hot-topics",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "资讯"
       ],
       "capabilities": [
         "tools",
@@ -117,11 +121,12 @@
       "version": "1.0.0",
       "description": "按实时汇率换算两种货币（例如 100 美元是多少人民币），走 Frankfurter / open.er-api 公开接口，不需要 Key",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/exchange-rate",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "生活"
       ],
       "capabilities": [
         "tools",
@@ -144,11 +149,12 @@
       "version": "1.0.0",
       "description": "查一个 IP 或域名归属地：国家、省市、运营商、ASN 与反向解析，走 ip-api 免费接口，不需要 Key",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/ip-info",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "工具"
       ],
       "capabilities": [
         "tools",
@@ -171,11 +177,12 @@
       "version": "1.0.0",
       "description": "抓一个 RSS/Atom 订阅源的最新几篇，整理成标题+链接+时间，正则解析不依赖任何 XML 库",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/rss",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
-        "社区"
+        "官方",
+        "资讯"
       ],
       "capabilities": [
         "tools",
