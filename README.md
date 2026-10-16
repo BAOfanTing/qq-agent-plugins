@@ -58,6 +58,55 @@ scripts/verify-index.mjs    自检：结构 + 仓库内产物 + 真下载核对
 
 CI 会跑同一个脚本；**每天还会自动跑一次并做真下载核对** —— 谁删了 Release、换了文件、或者镜像挂了，当天就会在这里暴露，而不是等使用者装的时候才发现。
 
+## 索引字段（给作者与维护者）
+
+必填：`id` / `version` / `sha256` / 下载地址（`downloadUrl`、`tarball`、`url` 任选其一，按这个顺序取第一个）。
+
+可选：
+
+| 字段 | 用途 |
+| --- | --- |
+| `name` / `description` / `author` / `homepage` | 市场列表与详情页显示 |
+| `tags` / `category` | 搜索与分类 |
+| `capabilities` | **使用者主要靠它判断要不要信**：`tools` / `observe` / `schedule` / `http` / `log` / `storage` / `config` / `send` |
+| `apiVersion` / `minVersion` | 兼容门控：对不上的条目照样列出来，但标成"本机装不了"并说明原因 |
+| `icon` / `screenshots` | 市场里的图标与截图（http(s) 地址） |
+| `readme` / `readmeUrl` / `changelogUrl` | 详情页正文与两个外链 |
+| `size` | 包大小（发布脚本自动填） |
+| `downloads` / `updatedAt` | 由**本仓库的定时任务**从 Release 下载计数写回，作者不用手填 |
+| `mirrors` | 备用下载地址（走镜像/CDN 的那份），宿主按 [主地址, 这些, 派生镜像] 顺序试 |
+| `revoked` + `revokedReason` | **撤回**：宿主读到就拒载、界面标出来（集中下架） |
+| `deprecated` + `deprecatedReason` | 弃用（有替代品），仍然可装但会提示 |
+
+## 上架流程（一条命令 + 一个 PR）
+
+在宿主项目里（那里有 `scripts/plugin-publish.mjs`）：
+
+```bash
+node scripts/plugin-publish.mjs examples/plugins/<你的插件>   --index-repo ../qq-agent-plugins --tag v<版本>   --category 工具 --tags 官方,工具   --homepage https://github.com/你/<仓库>
+```
+
+它会：打包 + **自测**（用宿主自己的安装器真装一遍，不过就不许上架）→ 把包放进本仓库
+`plugins/packages/` → 更新 `plugins/index.json` → 跑本仓库的自检（含真下载核对）→ 打印要执行的
+git/gh 命令。**加 `--push` 才会真的提交、打 tag、建 Release、推。**
+
+手工做也行，四步：把包放进 `plugins/packages/` → 挂 Release（tag 用 `v<版本>`）→ 改 `index.json`
+→ 跑 `node scripts/verify-index.mjs` 再提 PR。
+
+## 长期维护约定
+
+- **产物双份**：包既在 Release（给人下载、给下载量统计），**也提交在仓库里**（给镜像/CDN 走）。
+  所以作者删了仓库或 Release，已上架的东西**不会消失** —— 这是比"只挂 Release"更抗腐烂的一点。
+- **每日真下载核对**（`.github/workflows/verify.yml`）：谁删了 Release、换了文件、镜像挂了，
+  当天就暴露，而不是等使用者装的时候才发现。
+- **撤回是集中动作**：条目里标 `revoked` 就行（见上表），宿主下次读到索引就拒载并在界面标注；
+  使用者不需要自己改配置。举报走 issue 模板。
+- **弃用 vs 撤回**：有替代品用 `deprecated`（还能装、但提示），有恶意或失效用 `revoked`（不许装、不许跑）。
+- **作者不维护了怎么办**：产物已在本仓库 → 可以继续分发；源码是 MIT → 可以 fork 接手；
+  维护者可以改条目里的 `author` 标注为"社区维护"，或标 `deprecated`。**条目不会因为作者消失而失效。**
+- **不做什么**（免得反复讨论）：不自建商店托管、不做审核 SLA、不做评分与评论、**不做自动升级**
+  —— 升级必须由使用者点。理由：这些都是平台责任，而本仓库只是索引。
+
 ## 信任与安全
 
 - **`sha256` 必填**，且包在**换入之前**先校验。所以即使流量走了第三方镜像或 CDN（内容可能被替换），也一定会被发现并拒绝安装。
