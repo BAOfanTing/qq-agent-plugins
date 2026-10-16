@@ -1,0 +1,19 @@
+name: verify index
+
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # 每天 03:20（UTC）自动核对一次：谁的 Release 被删了、文件被换了、镜像挂了，当天就能看见
+    - cron: "20 3 * * *"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22.x"
+      # 结构 + 仓库内产物 + 真下载核对（真下载这一步会打到 GitHub Release，慢一点但值得）
+      - run: node scripts/verify-index.mjs

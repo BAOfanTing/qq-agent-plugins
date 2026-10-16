@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "note": "qq-agent-plus 的官方插件索引。控制台「设置 → 插件」默认从这个文件读可安装的插件（宿主侧 plugins.indexUrls / plugins.indexUrl 可改）。字段：必填 id / version / sha256 / 下载地址（downloadUrl、tarball、url 三个名字任选其一，按这个顺序取第一个）；可选 name / description / author / homepage / tags / capabilities / apiVersion / minVersion / revoked。apiVersion 与 minVersion 对不上的条目照样列出来，只是标成「本机装不了」并说明原因。**sha256 是必填**：包先按它校验再换入，所以即使走镜像/CDN，内容被换过也一定会被发现。",
+  "updatedAt": "2026-10-16",
+  "plugins": [
+    {
+      "id": "mc-status",
+      "name": "Minecraft 服务器状态",
+      "version": "1.0.0",
+      "description": "查一台 Minecraft 服务器的在线人数与玩家列表（走公开状态接口，默认 mcsrvstat.us）",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/mc-status",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": ["官方", "游戏"],
+      "capabilities": ["tools", "http", "log", "config"],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.0.0/mc-status-1.0.0.tar.gz",
+      "sha256": "178ec2ba64f19623b075e8dfa4216c0670846a0b62c5d8101a6bf952f1725ec1"
+    },
+    {
+      "id": "gh-activity",
+      "name": "GitHub 仓库动态",
+      "version": "1.0.0",
+      "description": "查一个 GitHub 仓库最近怎么样：star/issue 数、最近几次提交、最新 issue 标题、最后推送时间（公开 API，不需要 Key）",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/gh-activity",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": ["官方", "工具"],
+      "capabilities": ["tools", "http", "config"],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.0.0/gh-activity-1.0.0.tar.gz",
+      "sha256": "deae679eda44dfd13ef7b97350c6f6555a9e48888a5cf2ca446e1c2053ce2fe5"
+    },
+    {
+      "id": "weather",
+      "name": "天气",
+      "version": "1.0.0",
+      "description": "查一个城市现在的天气与未来三天（最高/最低温、降水概率、天气现象），走 Open-Meteo 公开接口，不需要 Key",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/weather",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": ["官方", "工具"],
+      "capabilities": ["tools", "http", "config"],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.0.0/weather-1.0.0.tar.gz",
+      "sha256": "c3f6883bb0891188fa738ee1f762e72d09e86d3915adf5ab3208859a5a351af9"
+    }
+  ]
+}
