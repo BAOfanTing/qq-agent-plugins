@@ -14,8 +14,8 @@
 
 ## 权限（使用者主要靠这一行判断要不要信）
 
-- [ ] 我用到的能力都在 `capabilities` 里声明了（`tools` / `observe` / `schedule` / `http` / `log` / `storage` / `config`）
-- [ ] 声明 `observe`（能看群消息）或 `http`（能把内容发出去）时，我在下面说明了为什么要用
+- [ ] 我用到的能力都在 `capabilities` 里声明了（`tools` / `observe` / `schedule` / `http` / `log` / `storage` / `config` / `send`）
+- [ ] 声明 `observe`（能看群消息）/ `http`（能把内容发出去）/ `send`（能**以机器人的身份在群里发言**）时，我在下面说明了为什么要用
 
 说明：
 

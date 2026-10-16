@@ -1,0 +1,35 @@
+name: update downloads
+
+# 把 Release 的下载计数写回 plugins/index.json（市场里"下载量"排序与"下载 N 次"靠它）。
+# 每天早上跑一次；手动 dispatch 也行。写不进去不会让 CI 红：统计失败只是这一项数据旧一天。
+on:
+  schedule:
+    - cron: "40 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22.x"
+      - run: node scripts/update-downloads.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 有变化就提交（[skip ci] 避免再触发一轮 verify：计数变化不影响内容校验）
+      - name: commit if changed
+        run: |
+          if [ -n "$(git status --porcelain plugins/index.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add plugins/index.json
+            git commit -m "chore: 更新下载量 [skip ci]"
+            git push
+          else
+            echo "没有变化"
+          fi

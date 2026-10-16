@@ -73,7 +73,8 @@ CI 会跑同一个脚本；**每天还会自动跑一次并做真下载核对** 
 | `icon` / `screenshots` | 市场里的图标与截图（http(s) 地址） |
 | `readme` / `readmeUrl` / `changelogUrl` | 详情页正文与两个外链 |
 | `size` | 包大小（发布脚本自动填） |
-| `downloads` / `updatedAt` | 由**本仓库的定时任务**从 Release 下载计数写回，作者不用手填 |
+| `updatedAt` | 发布脚本填（这条走的是宿主仓库的 `plugin-publish.mjs`） |
+| `downloads` | 由**本仓库的 `stats.yml` 每天从 Release 资产计数写回**（`scripts/update-downloads.mjs`）；上架当天该字段可能还是空的，主机的市场页这时按名字兜底排序 |
 | `mirrors` | 备用下载地址（走镜像/CDN 的那份），宿主按 [主地址, 这些, 派生镜像] 顺序试 |
 | `revoked` + `revokedReason` | **撤回**：宿主读到就拒载、界面标出来（集中下架） |
 | `deprecated` + `deprecatedReason` | 弃用（有替代品），仍然可装但会提示 |

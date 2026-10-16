@@ -2,6 +2,10 @@ name: verify index
 
 on:
   pull_request:
+  # 发布脚本 --push 是直接推 main（不走 PR），这里必须也响应 push ——
+  # 否则"当天就暴露"这句承诺要靠 03:20 那班定时任务兑现，最多晚一天
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     # 每天 03:20（UTC）自动核对一次：谁的 Release 被删了、文件被换了、镜像挂了，当天就能看见

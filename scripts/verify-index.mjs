@@ -2,6 +2,9 @@
 //
 // 查三类：
 //   ① 结构：必填字段（id / version / sha256 / 下载地址）、id 与 sha256 的形状、重复 id、地址是不是 http(s)；
+//      **所有会变成可点链接/图片的地址字段（homepage / readmeUrl / changelogUrl / icon / screenshots /
+//      mirrors）也一律只收 http(s)** —— 控制台会把它们原样做成 <a href> / <img src>，
+//      一条 `javascript:` 或 `data:` 就能在管理员页面里执行第三方脚本。宿主侧也挡了一道，这里是第二道；
 //   ② 仓库内产物：索引里的 sha256 必须等于 `plugins/packages/<包>` 的内容 —— 那是给镜像/CDN 走的那一份，
 //      它和 Release 上那份必须逐字节相同（不然装的人从 CDN 拿到的和索引说的不是同一个东西）；
 //   ③ `--remote`（默认开）：把每个 downloadUrl 真下载下来核对 sha256。**这一条是每日定时跑的**：
@@ -18,6 +21,9 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'plugins', 'index.json');
 const urlFields = ['downloadUrl', 'tarball', 'url'];
+// 会成为 <a href> / <img src> 的字段：形状不对就报错（宿主侧归一化会置空，但坏数据不该进仓库）
+const LINK_FIELDS = ['homepage', 'readmeUrl', 'changelogUrl', 'icon'];
+const LINK_LIST_FIELDS = ['screenshots', 'mirrors'];
 const idRe = /^[a-z0-9][a-z0-9-]{1,31}$/;
 const shaRe = /^[0-9a-f]{64}$/;
 const errors = [];
@@ -53,6 +59,23 @@ for (const [index, item] of plugins.entries()) {
   if (!/^https?:\/\//i.test(url)) { errors.push(`${id}: 缺少可下载地址（${urlFields.join(' / ')} 之一）`); continue; }
   if (!String(item?.capabilities ?? '').length || !Array.isArray(item.capabilities) || !item.capabilities.length) {
     errors.push(`${id}: capabilities 必须是非空数组（安装界面要原样展示，使用者据此判断要不要信）`);
+  }
+  for (const field of LINK_FIELDS) {
+    const value = item?.[field];
+    if (value === undefined || value === null || value === '') continue;
+    if (!/^https?:\/\//i.test(String(value).trim())) {
+      errors.push(`${id}: ${field} 只允许 http(s) 地址（实际 ${JSON.stringify(value)}）—— 控制台会把它做成可点链接`);
+    }
+  }
+  for (const field of LINK_LIST_FIELDS) {
+    const value = item?.[field];
+    if (value === undefined || value === null) continue;
+    if (!Array.isArray(value)) { errors.push(`${id}: ${field} 必须是地址数组`); continue; }
+    for (const one of value) {
+      if (!/^https?:\/\//i.test(String(one ?? '').trim())) {
+        errors.push(`${id}: ${field} 里有一个不是 http(s) 地址（${JSON.stringify(one)}）`);
+      }
+    }
   }
 
   // ② 仓库内那一份（CDN/镜像用）
