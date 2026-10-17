@@ -22,13 +22,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/gh-activity-1.0.0.tar.gz",
-      "sha256": "2c1870470e23f55409dd992d858672eaaf27ee80dc00a327442f92798cecd908",
+      "sha256": "b62f246a1058eae9421e914f6db84db671c0025ed168c8511e4044a6db439833",
       "icon": "",
       "category": "工具",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# GitHub 仓库动态（gh-activity）\n\n\"这个项目还活着吗\"—— 一条命令看 star / fork / 未关闭 issue 与 PR 数、最近几次提交、最新 issue 标题、\n最后推送时间、是否已归档。走 GitHub 公开 API，**不需要任何 Key**（未认证有速率限制，个人使用足够）。\n\n## 群里可以这么问\n\n- 「sakurawwwxh/qq-agent-plus 最近还更新吗」\n- 「facebook/react 现在多少 star」\n- 「这个库最近有没有人提 issue」+ 仓库地址\n\n模型会调 `gh-activity__repo_activity`，再把数字整理成一句话给你。\n\n## 它给出什么\n\n- star / fork / 未关闭 issue 与 PR 数\n- 最近几次提交（作者 + 标题 + 时间）\n- 最新 issue 标题\n- 最后推送时间、是否已归档\n\n## 配置（可选）\n\n```json\n{ \"plugins\": { \"settings\": { \"gh-activity\": { \"perPage\": 5 } } } }\n```\n\n`perPage`：返回多少条提交 / issue，默认 5（1-20）。\n\n## 边界\n\n- **只读**：不 star、不提 issue、不改任何东西；也没有 `send` 能力，不能在群里发言。\n- 请求经宿主的 `cap.http.request`（内网地址被拦、有体积上限与超时，日志里查得到）。\n- **不缓存**：每次都是即时查询 —— 数字是最新的，也意味着会消耗 GitHub 的速率额度。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/gh-activity/`。\n",
-      "size": 4023,
+      "readme": "# GitHub 仓库动态 gh-activity\n\n**这个项目还活着吗** —— 一条命令看 star、最近提交、最新 issue、最后推送时间。\n走 GitHub 公开 API，**不需要 Key**。\n\n## 能做什么\n\n- **一眼看活跃度**：star / fork、未关闭 issue 与 PR 数、最后推送时间、是否已归档\n- **最近在改什么**：最近几次提交（作者 + 标题 + 时间）\n- **最近在讨论什么**：最新几条 issue 标题\n\n## 群里怎么问\n\n- 「sakurawwwxh/qq-agent-plus 最近还更新吗」\n- 「facebook/react 现在多少 star」\n- 「这个库最近有没有人提 issue」+ 仓库地址\n\n## 配置（可选）\n\n- `perPage` —— 返回几条提交 / issue，默认 5（1-20）\n\n```json\n{ \"plugins\": { \"settings\": { \"gh-activity\": { \"perPage\": 5 } } } }\n```\n\n## 边界\n\n- **只读**：不 star、不提 issue、不改任何东西；没有 `send`，不能在群里发言\n- **不缓存**：每次即时查 GitHub —— 数字是最新的，也会消耗未认证的速率额度\n- 请求经宿主的 `cap.http.request`（内网地址被拦、有体积上限与超时，日志里查得到）\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/gh-activity/`。\n",
+      "size": 3975,
       "updatedAt": "2026-10-17"
     },
     {
@@ -50,13 +50,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/weather-1.0.0.tar.gz",
-      "sha256": "14d0a6dc9b40a0b1be9d22059dd7c1eae3aeafa3a9abcf6dd7a2b91400ecaf8c",
+      "sha256": "8bdfe0c6a1ac59012582b40f7a2fc0b6bd2e483411d61d41eb74471865b8b762",
       "icon": "",
       "category": "生活",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 天气（weather）\n\n问一句就有答案：今天要不要带伞、明天冷不冷。查当前天气与未来三天（明天起）（温度、体感、天气现象、\n湿度、风速、降水概率），走 [Open-Meteo](https://open-meteo.com/) 公开接口 —— **不需要 Key**，\n装上就能用。\n\n## 群里可以这么问\n\n- 「上海今天要带伞吗」\n- 「东京未来三天冷不冷」\n- 「北京现在几度」\n\n模型会调 `weather__current` 拿数据，再用人话回你（不会把 JSON 原样贴出来）。\n\n## 它给出什么\n\n- 现在：温度、体感、天气现象、湿度、风速\n- 未来三天（明天起）：每天的最高 / 最低温、降水概率\n- 不传城市时用配置里的默认城市（见下）\n\n## 配置（可选）\n\n```json\n{ \"plugins\": { \"settings\": { \"weather\": { \"defaultCity\": \"上海\" } } } }\n```\n\n`defaultCity`：模型没指定城市时用哪个，默认 `Beijing`。中英文城市名都行（走 Open-Meteo 的地理编码）。\n\n## 边界\n\n- **只读**：不写任何东西，也不能在群里发言（`capabilities` 里没有 `send`）。\n- 请求经宿主的 `cap.http.request`（内网地址被拦、有体积上限与超时）。\n- **不做缓存、不做定时播报**：每次问都是现查；想每天早上自动播报要等 v1.1 的 `send` 能力。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/weather/`。\n",
-      "size": 4187,
+      "readme": "# 天气 weather\n\n**问一句就有答案**：上海今天要不要带伞、东京明天冷不冷。\n数据来自 Open-Meteo 公开接口，**不需要 Key**，装上就能用。\n\n## 能做什么\n\n- **今天的实况**：温度、体感、天气现象、湿度、风速\n- **未来三天**：每天的最高 / 最低温与降水概率（从明天起算）\n- **随口问**：中英文城市名都认；不说城市就用配置里的默认城市\n\n## 群里怎么问\n\n- 「上海今天要带伞吗」\n- 「东京未来三天冷不冷」\n- 「北京现在几度」\n\n## 配置（可选）\n\n- `defaultCity` —— 没说城市时用哪个，默认 `Beijing`\n\n```json\n{ \"plugins\": { \"settings\": { \"weather\": { \"defaultCity\": \"上海\" } } } }\n```\n\n## 边界\n\n- **不能在群里自己发言**：没有 `send` 能力；想每天早上定时播报要等 v1.1\n- 只读：不写任何东西。请求经宿主（内网地址被拦、有体积上限与超时）\n- 不缓存：每次都是现查，所以数据是最新的\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/weather/`。\n",
+      "size": 4019,
       "updatedAt": "2026-10-17"
     },
     {
@@ -78,13 +78,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/translate-1.0.0.tar.gz",
-      "sha256": "8e5635cd3d609a6ecf00d01dea1b0878d7a0ddbac9311445f826e1f1ec437c79",
+      "sha256": "f16d0ab757ec54f6072cfaa72147fc40acb9b37b1b62169a991eafad52002acf",
       "icon": "",
       "category": "生活",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 翻译（translate）\n\n把一句话或一小段文本翻成另一种语言 —— 群里那类「这句英文什么意思」「帮我翻成日语」。\n走 [MyMemory](https://mymemory.translated.net/) 公开接口，**不需要 Key**（DeepL / 百度 / 腾讯那几家都要）。\n\n## 群里可以这么问\n\n- 「把『今天真热』翻成日语」\n- 「这句英文什么意思：It works on my machine」\n- 「帮我翻成英文：明天下午三点开会，改到 404」\n\n模型会调 `translate__text`，直接把译文给你。\n\n## 它给出什么\n\n译文一行。中（`zh-CN`）、英（`en`）、日（`ja`）、韩（`ko`）互译最常见；也可以写「日语」「韩语」\n这类中文名，或直接给 MyMemory 认识的语言码。目标语言没指定时用配置里的默认值。\n\n## 配置（可选）\n\n```json\n{ \"plugins\": { \"settings\": { \"translate\": { \"defaultTo\": \"en\" } } } }\n```\n\n`defaultTo`：模型没给目标语言时取哪个，默认 `zh-CN`。想让它默认中译英就改成 `en`。\n\n## 边界\n\n- **只读**，不写任何东西，也不能在群里发言（没有 `send`）。\n- **一次上限 1000 字**，超了会明确提示分段（上游本身也有长度上限）。\n- 请求经宿主的 `cap.http.request`（内网被拦、有体积上限与超时），插件不自己发请求。\n- **译文质量有限**：MyMemory 是公开的免费记忆库，专业内容请人工校对。它有个已知的坑 —— 有时会把\n  原文原样返回（HTTP 200、无报错）；这种情况插件会在结果里带 `warning`（\"上游没给出译文，请勿当成\n  翻译结果\"），而不是把\"没翻\"讲成\"翻完了\"。\n- 匿名额度有限（每日配额），用完当天会返回上游的提示，第二天才恢复。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/translate/`。\n",
-      "size": 5342,
+      "readme": "# 翻译 translate\n\n**这句英文什么意思**、**帮我翻成日语** —— 中 / 英 / 日 / 韩互译。\n走 MyMemory 公开接口，**不需要 Key**（DeepL / 百度 / 腾讯那几家都要）。\n\n## 能做什么\n\n- **四个语种互译**：中（`zh-CN`）、英（`en`）、日（`ja`）、韩（`ko`）\n- **不用指定源语言**：只给原文和目标语言，它自己判断\n- **一次一小段**：上限 1000 字，超了会提示分段\n\n## 群里怎么问\n\n- 「把『今天真热』翻成日语」\n- 「这句英文什么意思：It works on my machine」\n- 「帮我翻成英文：明天下午三点开会，改到 404」\n\n## 配置（可选）\n\n- `defaultTo` —— 没说目标语言时用哪个，默认 `zh-CN`。想默认中译英就改成 `en`\n\n```json\n{ \"plugins\": { \"settings\": { \"translate\": { \"defaultTo\": \"en\" } } } }\n```\n\n## 边界\n\n- **译文质量有限**：MyMemory 是公开的免费记忆库，专业内容请人工校对\n- 它有个已知的坑：**有时会把原文原样返回**（HTTP 200、不报错）。这种情况结果里带 `warning`，\n  不会把「没翻」讲成「翻完了」\n- 匿名额度按天算，用完当天不可用，第二天恢复\n- 只读，不能发言\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/translate/`。\n",
+      "size": 5102,
       "updatedAt": "2026-10-17"
     },
     {
@@ -106,13 +106,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/hot-topics-1.0.0.tar.gz",
-      "sha256": "caeaa4cc4064b544a3faafb48262a35960eeb1a9cc579ebe87a5b559909800c2",
+      "sha256": "c6f06fc09721db4192233ebc6dfb7d5c5468952733533135ce45199ff8cad021",
       "icon": "",
       "category": "资讯",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 热点（hot-topics）\n\n科技圈当时在聊什么 —— 抓 V2EX 或 Hacker News 的热帖榜，整理成「标题 + 链接 + 热度」几行，\n模型可以直接念给群里听。两个源都**不需要 Key**。\n\n## 群里可以这么问\n\n- 「今天有啥热点」\n- 「V2EX 现在在聊什么」\n- 「HN 头条前五条」\n\n模型会调 `hot-topics__list`（`source` 可选 `v2ex` 默认 / `hn`，`limit` 默认 5、最多 20）。\n\n## 它给出什么\n\n每一条：标题、链接、热度（回复数 / 分数）。不会抓正文，也不会替你写摘要 —— 怎么念由模型决定。\n\n## 配置（可选，主要给测试 / 镜像用）\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"hot-topics\": {\n        \"v2exUrl\": \"https://www.v2ex.com/api/topics/hot.json\",\n        \"hnApiBase\": \"https://hacker-news.firebaseio.com/v0\"\n      }\n    }\n  }\n}\n```\n\n- `v2exUrl`：覆盖 V2EX 热帖地址\n- `hnApiBase`：覆盖 HN 接口根（`/topstories.json` 与 `/item/<id>.json` 会拼在它后面）\n\n**指到内网地址会被宿主的网络守卫拦下** —— 这是有意的：插件不许绕过宿主自己上网。\n\n## 边界\n\n- **只读**，不写任何东西，也不能在群里发言（没有 `send`）。\n- 不做全文抓取、不做摘要、不做定时播报（想每天固定播报要等 v1.1 的 `send`）。\n- 排序与 V2EX / HN 页面不一定逐条一致：读的是它们的公开接口。\n- 上游挂了或改接口会返回可读错误（例如「HN 的条目详情一条都没取到」），不会静默给一个空榜。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/hot-topics/`。\n",
-      "size": 4861,
+      "readme": "# 热点 hot-topics\n\n**科技圈当时在聊什么** —— V2EX / Hacker News 的热帖榜，整理成「标题 + 链接 + 热度」。\n两个源都**不需要 Key**。\n\n## 能做什么\n\n- **两个榜**：V2EX（默认）与 Hacker News；每次几条可调（默认 5，最多 20）\n- **只给榜单**：标题、链接、热度 —— 正文与摘要不抓，怎么念由模型决定\n- **分别取源**：V2EX 直接读热帖接口；HN 先取 id 榜再并行取详情\n\n## 群里怎么问\n\n- 「今天有啥热点」\n- 「V2EX 现在在聊什么」\n- 「HN 头条前五条」\n\n## 配置（可选，主要给测试 / 镜像用）\n\n- `v2exUrl` —— 覆盖 V2EX 热帖地址\n- `hnApiBase` —— 覆盖 HN 接口根（`/topstories.json` 与 `/item/<id>.json` 拼在它后面）\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"hot-topics\": {\n        \"v2exUrl\": \"https://www.v2ex.com/api/topics/hot.json\",\n        \"hnApiBase\": \"https://hacker-news.firebaseio.com/v0\"\n      }\n    }\n  }\n}\n```\n\n指到内网地址会被宿主的网络守卫拦下 —— 有意的：插件不许绕过宿主自己上网。\n\n## 边界\n\n- **只读**，不能发言；不做定时播报（要等 v1.1 的 `send`）\n- 排序与站点页面不一定逐条一致：读的是它们的公开接口\n- 上游改接口会返回可读错误（例如「HN 的条目详情一条都没取到」），不会静默给空榜\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/hot-topics/`。\n",
+      "size": 4737,
       "updatedAt": "2026-10-17"
     },
     {
@@ -134,13 +134,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/exchange-rate-1.0.0.tar.gz",
-      "sha256": "20e7c77b5c68a00657b73015e90a28a20464a4da0e763eabca5ea4700f177dc2",
+      "sha256": "952db3762e9bede427dd5bcd41809449c87daf5f4e186dc454004d9aa4803fb0",
       "icon": "",
       "category": "生活",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 汇率（exchange-rate）\n\n「100 美元是多少人民币」—— 给出一个**可核对的数字**，而不是随口编一个看着像真的汇率。\n主源用 [Frankfurter](https://frankfurter.dev/)（欧洲央行数据），主源没有的币种自动换\n[open.er-api.com](https://open.er-api.com/)；两个源都**不需要 Key**。\n\n## 群里可以这么问\n\n- 「100 美元是多少人民币」\n- 「这 50 欧元等于多少日元」\n- 「2000 日元合多少人民币」\n\n模型会调 `exchange-rate__convert`（`amount` 是金额，`from` / `to` 是三字母货币代码）。\n\n## 它给出什么\n\n换算结果，**外加两样可核对的东西**：实际用了哪家源、汇率是哪一天的。主源不支持某个币种\n（例如 ECB 表里没有 TWD）或临时失败时会自动换兜底，结果里会注明。\n\n## 配置（可选）\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"exchange-rate\": {\n        \"frankfurterUrl\": \"https://api.frankfurter.dev/v1\",\n        \"erApiUrl\": \"https://open.er-api.com/v6/latest\"\n      }\n    }\n  }\n}\n```\n\n两个地址都可以换成自建代理 / 镜像（给测试或内网部署用）。**指到内网会被宿主的网络守卫拦下。**\n\n## 边界\n\n- **只读**，不写任何东西，也不能在群里发言（没有 `send`）。\n- 只做换算：不提供历史曲线、不做金融分析。\n- **不给\"成交价\"承诺**：公开汇率表是参考中间价，真实成交价以银行 / 平台为准 —— 结果里会带这句提醒。\n- 同币种（`USD` → `USD`）本地直接返回原金额，不打上游（有些源对 `base=symbols` 会直接报错）。\n- 取不到时返回可读错误（例如「两家汇率源都取不到：…」），不会静默给空结果。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/exchange-rate/`。\n",
-      "size": 4791,
+      "readme": "# 汇率 exchange-rate\n\n**100 美元是多少人民币** —— 给出一个**可核对的数字**，附上汇率日期与来源。\n主源是欧洲央行数据（Frankfurter），主源没有的币种自动换 open.er-api；两个都**不需要 Key**。\n\n## 能做什么\n\n- **换算两种货币**：金额 + 源币种 + 目标币种（三字母代码）\n- **说清出处**：实际用了哪家源、汇率是哪一天的\n- **同币种直接返回**，不打上游（有些源对 `base=symbols` 会直接报错）\n- **主源缺币种时自动兜底**：例如 ECB 表里没有 TWD，会换 open.er-api\n\n## 群里怎么问\n\n- 「100 美元是多少人民币」\n- 「这 50 欧元等于多少日元」\n- 「2000 日元合多少人民币」\n\n## 配置（可选）\n\n- `frankfurterUrl` / `erApiUrl` —— 换成自建代理或镜像（给测试 / 内网部署用）\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"exchange-rate\": {\n        \"frankfurterUrl\": \"https://api.frankfurter.dev/v1\",\n        \"erApiUrl\": \"https://open.er-api.com/v6/latest\"\n      }\n    }\n  }\n}\n```\n\n## 边界\n\n- **不是成交价**：公开汇率表是参考中间价，真实成交价以银行 / 平台为准 —— 结果里会带这句\n- 只做换算：不提供历史曲线、不做金融分析\n- 两家源都取不到时返回可读错误，不会静默给空结果\n- 只读，不能发言\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/exchange-rate/`。\n",
+      "size": 4578,
       "updatedAt": "2026-10-17"
     },
     {
@@ -162,13 +162,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/ip-info-1.0.0.tar.gz",
-      "sha256": "c408ed624ed8a8f51cad4cc7f514e2c09b3c0dab24ec8f4209bc82d1786ae722",
+      "sha256": "0e52cd0d784754754d876532cdc78c2801364452b71fd0b865010bfbf82bbcde",
       "icon": "",
       "category": "工具",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# IP 查询（ip-info）\n\n「这个 IP 是哪儿的」「example.com 的服务器在哪」—— 给出国家、省市、运营商、所属组织、ASN。\n走 [ip-api.com](https://ip-api.com/) 免费接口，**不需要 Key**（免费层每分钟 45 次）。\n\n## 群里可以这么问\n\n- 「8.8.8.8 是哪儿的」\n- 「github.com 的服务器在哪」\n- 「这个 IP 归属哪个运营商」+ IP\n\n模型会调 `ip-info__lookup`（`query` 传 IP 或域名都行）。\n\n## 它给出什么\n\n国家、省市、运营商（ISP）、所属组织、ASN、反向解析。**归属地是 IP 的登记信息**，不保证是服务器的\n实际物理位置（CDN / 代理会让它看起来在别处）—— 这条提醒会跟着结果一起返回。\n\n## 配置（可选）\n\n```json\n{ \"plugins\": { \"settings\": { \"ip-info\": { \"endpoint\": \"http://ip-api.com/json\" } } } }\n```\n\n`endpoint` 可以换成自建 / 镜像接口（给测试或内网部署用）。**指到内网会被宿主的网络守卫拦下。**\n\n## 关于域名解析（一个刻意的取舍）\n\nip-api 自己接受域名（它在服务端解析），所以这个插件**不在本地做 DNS**：\n\n- 宿主在 Linux 上把插件进程放进**没有网络接口的命名空间**（见 `docs/PLUGINS.md` 的信任声明），\n  那种环境里插件自己的 `dns` 解析会直接失败 —— 结果就是「能查 IP 却查不了域名」。\n- 把解析交给上游，插件对网络的唯一出口就只剩宿主的 `cap.http.request`，各种部署下行为一致。\n\n代价：接口是 `http://`（ip-api 免费层只给 http），请求仍经宿主的网络守卫。\n\n## 边界\n\n- **只读**，不写任何东西，也不能在群里发言（没有 `send`）。\n- 不查内网 / 私有地址（`192.168.x.x`、`10.x.x.x`、回环等会返回「公开接口查不到」）。\n- 不做端口扫描、不反查域名列表、不查历史归属。\n- 上游挂掉 / 限频时返回可读错误（例如「查询接口返回 HTTP 429（可能是限频了）」），不会静默给空。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/ip-info/`。\n",
-      "size": 4700,
+      "readme": "# IP 查询 ip-info\n\n**这个 IP 是哪儿的** —— 国家、省市、运营商、所属组织、ASN。\n走 ip-api 免费接口，**不需要 Key**（免费层每分钟 45 次）。\n\n## 能做什么\n\n- **IP 和域名都行**：`8.8.8.8`、`github.com`\n- **查归属**：国家、省市、运营商（ISP）、所属组织、ASN、反向解析\n- **域名交给上游解析**（原因见下），各种部署下行为一致\n\n## 群里怎么问\n\n- 「8.8.8.8 是哪儿的」\n- 「github.com 的服务器在哪」\n- 「这个 IP 归属哪个运营商」+ IP\n\n## 配置（可选）\n\n- `endpoint` —— 换成自建 / 镜像接口\n\n```json\n{ \"plugins\": { \"settings\": { \"ip-info\": { \"endpoint\": \"http://ip-api.com/json\" } } } }\n```\n\n## 边界\n\n- **归属地是 IP 的登记信息**，不保证是服务器的实际物理位置（CDN / 代理会让它看起来在别处）——\n  结果里会带这句提醒\n- 不查内网 / 私有地址（`192.168.x.x`、`10.x.x.x`、回环等）\n- 不做端口扫描、不反查域名列表、不查历史归属\n- 接口是 `http://`（免费层只给 http），请求仍经宿主的网络守卫\n- 只读，不能发言\n\n## 关于域名解析（一个刻意的取舍）\n\nip-api 自己接受域名（它在服务端解析），所以这个插件**不在本地做 DNS**：\n\n- 宿主在 Linux 上把插件进程放进**没有网络接口的命名空间**（见 `docs/PLUGINS.md` 的信任声明），\n  那种环境里插件自己的 `dns` 解析会直接失败 —— 结果就是「能查 IP 却查不了域名」\n- 把解析交给上游，插件对网络的唯一出口就只剩宿主的 `cap.http.request`\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/ip-info/`。\n",
+      "size": 4480,
       "updatedAt": "2026-10-17"
     },
     {
@@ -189,13 +189,13 @@
         "http"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/rss-1.0.0.tar.gz",
-      "sha256": "4b8b66ba7f4ca90e32600c2e8a749838aa64ac4e930ebbb3e28d731268389e70",
+      "sha256": "93b28d54a9258ce7fb09ad26fe820685868fde1b685d7074efd7ed27343ca63f",
       "icon": "",
       "category": "资讯",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# RSS 订阅（rss）\n\n群友丢来一个博客、新闻站、播客的订阅地址问「最近更新了啥」—— 抓一份「标题 + 链接 + 发布时间」。\n**插件没有内置任何源**，订阅地址由调用方每次给。\n\n## 群里可以这么问\n\n- 「这个博客最近更新了啥」+ 订阅地址\n- 「帮我看看这个 RSS 有没有新文章」\n- 「这个播客最近三期的标题」\n\n模型会调 `rss__latest`（`url` 必填，`limit` 默认 5、最多 20）。\n\n## 它给出什么\n\n条目清单：标题、链接、发布时间（能认出来就归一成 ISO，认不出来就原样给出，不编造时间）。\n不抓正文、不做摘要 —— 要不要再看正文由模型决定（它还有 `web_fetch`）。\n\n## 配置\n\n**不用填配置。** 订阅地址每次由调用方给（`capabilities` 里没有 `config`，这个插件不读设置）。\n\n## 它怎么解析（值得知道的取舍）\n\n**零依赖、不引 XML 库**（v1 只收零依赖插件，宿主不装构建工具）—— 用正则与字符串取出\n`<item>`（RSS）/ `<entry>`（Atom）里的标题、链接、时间三个字段。RSS/Atom 结构很稳定，这么做够用；\n代价是**遇到不规则的源可能解析不全**。三种情况都做了显式处理：\n\n- **非 XML / 就是个网页**：明确报错（并提示「这多半是博客首页而不是 feed 地址」），不硬解析成空条目\n- **超大响应**：宿主有体积上限，超了会被截断 —— 结果里带 `truncated: true` 并说明只解析了前面一段\n- **没有条目**：明确报错（空源或格式不认识），**不静默返回空**\n\n另外：`&amp;lt;` 这类双重转义按「实体只解一层」处理。\n\n## 边界\n\n- **只读**，不写任何东西，也不能在群里发言（没有 `send`）。\n- 不做定时推送 / 订阅管理：想每天固定播报要等 v1.1 的 `send` 能力。\n- 经宿主抓取（内网地址被拦、有体积上限与超时），插件不自己发请求。\n\n## 装\n\n控制台左侧「插件」→ 目录里点安装 → 点启用（装上 ≠ 授权）。手工的话把本目录拷到\n`$DATA_DIR/plugins/rss/`。\n",
-      "size": 6071,
+      "readme": "# RSS 订阅 rss\n\n**这个博客最近更新了啥** —— 给一个 RSS / Atom 地址，返回最新几篇的标题、链接、时间。\n**插件不自带任何源**，地址每次由调用方给。\n\n## 能做什么\n\n- **任意 RSS / Atom 源**：博客、新闻站、播客都行\n- **要几条可调**（默认 5，最多 20）\n- **只给清单**：标题 / 链接 / 时间；要不要看正文由模型决定（它还有 `web_fetch`）\n\n## 群里怎么问\n\n- 「这个博客最近更新了啥」+ 订阅地址\n- 「帮我看看这个 RSS 有没有新文章」\n- 「这个播客最近三期的标题」\n\n## 配置\n\n**不用填** —— `capabilities` 里没有 `config`，这个插件不读设置。\n\n## 边界\n\n- **解析是「够用」级别**：零依赖、不引 XML 库（v1 只收零依赖插件），遇到不规则的源可能解析不全\n- 给的地址是个网页而不是 feed 时**明确报错**（提示「这多半是博客首页」），不硬解析成空条目\n- 响应过大被宿主截断时，结果里带 `truncated: true` 并说明只解析了前面一段\n- 没有条目会明确报错，不会静默返回空；日期认不出就原样给出，不编造时间\n- 只读，不能发言；不做定时推送 / 订阅管理\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/rss/`。\n",
+      "size": 5744,
       "updatedAt": "2026-10-17"
     }
   ]
