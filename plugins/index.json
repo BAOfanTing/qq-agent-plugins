@@ -80,7 +80,7 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/translate-1.0.0.tar.gz",
-      "sha256": "39e5445c26c54c77c5b8ccd1e0f62455b1555648b199d8cab594b7d98eb4f3c2",
+      "sha256": "dd26e12b1f41b9ca860804568d77e50e1ed5c9832d537461b4d35d361864a659",
       "icon": "",
       "category": "生活",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
@@ -167,13 +167,13 @@
         "config"
       ],
       "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/ip-info-1.0.0.tar.gz",
-      "sha256": "343f485ad132e62c78080e2c08ad7c0deaef01564ceba9d0b3e3e4999f52b553",
+      "sha256": "2bfd82d3675700688c1b197b90f2b87b300fa97856d24047cea01425ecaa0ffe",
       "icon": "",
       "category": "工具",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
       "readmeUrl": "",
       "readme": "# IP 查询 ip-info\n\n**这个 IP 是哪儿的** —— 国家、省市、运营商、所属组织、ASN。\n走 ip-api 免费接口，**不需要 Key**（免费层每分钟 45 次）。\n\n## 能做什么\n\n- **IP 和域名都行**：`8.8.8.8`、`github.com`\n- **查归属**：国家、省市、运营商（ISP）、所属组织、ASN、反向解析\n- **域名交给上游解析**（原因见下），各种部署下行为一致\n\n## 群里怎么问\n\n- 「8.8.8.8 是哪儿的」\n- 「github.com 的服务器在哪」\n- 「这个 IP 归属哪个运营商」+ IP\n\n## 配置（可选）\n\n- `endpoint` —— 换成**公网**的自建 / 镜像接口（内网地址会被宿主的网络守卫拦下）\n\n```json\n{ \"plugins\": { \"settings\": { \"ip-info\": { \"endpoint\": \"http://ip-api.com/json\" } } } }\n```\n\n## 边界\n\n- **归属地是 IP 的登记信息**，不保证是服务器的实际物理位置（CDN / 代理会让它看起来在别处）——\n  结果里会带这句提醒\n- 不查内网 / 私有地址（`192.168.x.x`、`10.x.x.x`、回环等）\n- 不做端口扫描、不反查域名列表、不查历史归属\n- 接口是 `http://`（免费层只给 http），请求仍经宿主的网络守卫\n- 只读，不能发言\n\n## 关于域名解析（一个刻意的取舍）\n\nip-api 自己接受域名（它在服务端解析），所以这个插件**不在本地做 DNS**：\n\n- 宿主在 Linux 上把插件进程放进**没有网络接口的命名空间**（见 `docs/PLUGINS.md` 的信任声明），\n  那种环境里插件自己的 `dns` 解析会直接失败 —— 结果就是「能查 IP 却查不了域名」\n- 把解析交给上游，插件对网络的唯一出口就只剩宿主的 `cap.http.request`\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/ip-info/`。\n",
-      "size": 4510,
+      "size": 5038,
       "updatedAt": "2026-10-17",
       "downloads": 7
     },
