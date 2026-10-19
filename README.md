@@ -16,7 +16,9 @@ plugins/packages/*.tar.gz   包（与索引里 sha256 逐字节对应）—— �
 scripts/verify-index.mjs    自检：结构 + 仓库内产物 + 真下载核对
 ```
 
-同一份包同时挂在本仓库的 **Release** 上（`downloadUrl` 指的就是它）：下载与"被下载了多少次"都从那里统计。
+同一份包同时挂在本仓库的 **滚动 Release**（tag 固定为 `packages`）上（`downloadUrl` 指的就是它）：下载与"被下载了多少次"都从那里统计。
+
+**加插件、升版本都不需要新建 Release**：把包提交到 `plugins/packages/`，CI（`.github/workflows/sync-packages.yml`）会把它同步到 `packages` 这个 Release 上。资产名固定为 `<id>-<version>.tar.gz`，已存在的不动（换内容请升版本），旧版本的不删（旧条目还指着它们）。
 
 **源码与打包脚本不在这个仓库**，在宿主项目（`qq-agent-plus`）的 `examples/plugins/<id>/`；发布一个插件用的也是那边的 `scripts/plugin-pack.mjs`（打包 + 自测 + 生成条目一气做完）。
 
@@ -52,9 +54,11 @@ scripts/verify-index.mjs    自检：结构 + 仓库内产物 + 真下载核对
 
 1. 在宿主项目里写插件、打包、自测（`node scripts/plugin-pack.mjs <插件目录>`，它会用宿主自己的安装器真装一遍）；
 2. 把打出来的包提交到本仓库的 `plugins/packages/`；
-3. 把包挂到本仓库的一个 **Release**（tag 用 `v<版本>`，把 `downloadUrl` 指过去）；
-4. 改 `plugins/index.json` 加一条；
-5. 本地跑一遍 `node scripts/verify-index.mjs`，然后提 PR（模板会问你权限、是否签名、源码在哪）。
+3. 改 `plugins/index.json` 加一条，`downloadUrl` 固定写成
+   `https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/<id>-<version>.tar.gz`
+   （**不用手动建 Release**：合并进 main 后 CI 会把缺的包传到 `packages` 那个滚动 Release 上）；
+4. 本地跑一遍 `node scripts/verify-index.mjs --no-remote`，然后提 PR（模板会问你权限、是否签名、源码在哪）。
+   PR 阶段只做离线核对——新包还没上 Release，远端核对要等合并后那班 CI 做。
 
 CI 会跑同一个脚本；**每天还会自动跑一次并做真下载核对** —— 谁删了 Release、换了文件、或者镜像挂了，当天就会在这里暴露，而不是等使用者装的时候才发现。
 
@@ -84,20 +88,24 @@ CI 会跑同一个脚本；**每天还会自动跑一次并做真下载核对** 
 在宿主项目里（那里有 `scripts/plugin-publish.mjs`）：
 
 ```bash
-node scripts/plugin-publish.mjs examples/plugins/<你的插件>   --index-repo ../qq-agent-plugins --tag v<版本>   --category 工具 --tags 官方,工具   --homepage https://github.com/你/<仓库>
+node scripts/plugin-publish.mjs examples/plugins/<你的插件>   --index-repo ../qq-agent-plugins   --category 工具 --tags 官方,工具   --homepage https://github.com/你/<仓库>
 ```
 
 它会：打包 + **自测**（用宿主自己的安装器真装一遍，不过就不许上架）→ 把包放进本仓库
-`plugins/packages/` → 更新 `plugins/index.json` → 跑本仓库的自检（含真下载核对）→ 打印要执行的
-git/gh 命令。**加 `--push` 才会真的提交、打 tag、建 Release、推。**
+`plugins/packages/` → 更新 `plugins/index.json` → 跑本仓库的离线自检 → 打印要执行的 git 命令。
+**加 `--push` 才会真的提交并推 main**；推上去之后 CI 把新包同步到 `packages` Release 上，再做真下载核对。
+不需要发 tag，也不需要 `gh release create`。
 
-手工做也行，四步：把包放进 `plugins/packages/` → 挂 Release（tag 用 `v<版本>`）→ 改 `index.json`
-→ 跑 `node scripts/verify-index.mjs` 再提 PR。
+手工做也行，三步：把包放进 `plugins/packages/` → 改 `index.json`（`downloadUrl` 指向 `packages` Release）
+→ 跑 `node scripts/verify-index.mjs --no-remote` 再提 PR。
 
 ## 长期维护约定
 
 - **产物双份**：包既在 Release（给人下载、给下载量统计），**也提交在仓库里**（给镜像/CDN 走）。
   所以作者删了仓库或 Release，已上架的东西**不会消失** —— 这是比"只挂 Release"更抗腐烂的一点。
+- **一个 Release 装所有包**（`.github/workflows/sync-packages.yml`）：tag 固定 `packages`，
+  推 `plugins/**` 时把缺的资产补上去。资产**只增不删**（旧条目还指着旧版本），
+  同版本号不要换内容——换内容就升版本，否则同名覆盖会把下载计数清零。
 - **每日真下载核对**（`.github/workflows/verify.yml`）：谁删了 Release、换了文件、镜像挂了，
   当天就暴露，而不是等使用者装的时候才发现。
 - **撤回是集中动作**：条目里标 `revoked` 就行（见上表），宿主下次读到索引就拒载并在界面标注；

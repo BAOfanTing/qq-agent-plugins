@@ -1,0 +1,76 @@
+name: sync-packages
+
+# 包以滚动方式挂在一个固定的 Release（tag `packages`）上：
+# 加插件、升版本都不用再发 Release，推上来 CI 自己同步。
+# 资产名固定为 `<id>-<version>.tar.gz`；已存在的不动（换内容请升版本，
+# 同名覆盖会把下载计数清零），旧版本的一律保留——旧条目还指着它们。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '已存在的同名资产也用本地文件覆盖（仅用于修复发错的包）'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-packages
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: packages
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: 确保滚动 Release 存在
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG 已存在"
+          else
+            gh release create "$TAG" \
+              --target main \
+              --title "插件包（滚动）" \
+              --notes "插件包资产（滚动）。CI 会把 plugins/packages/ 里的包同步到这里；索引里的 downloadUrl 固定指向本 Release。不要手动删除。" \
+              --latest=false
+          fi
+
+      - name: 上传缺少的包资产
+        run: |
+          shopt -s nullglob
+          files=(plugins/packages/*.tar.gz)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "没有包可同步"
+            exit 0
+          fi
+          existing="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
+          force='${{ inputs.force }}'
+          for f in "${files[@]}"; do
+            name="$(basename "$f")"
+            if grep -qxF "$name" <<<"$existing"; then
+              if [ "$force" = "true" ]; then
+                echo "覆盖 $name"
+                gh release upload "$TAG" "$f" --clobber
+              else
+                echo "跳过 $name（已存在）"
+              fi
+            else
+              echo "上传 $name"
+              gh release upload "$TAG" "$f"
+            fi
+          done
+
+      - name: 真下载核对
+        run: |
+          corepack enable 2>/dev/null || true
+          node scripts/verify-index.mjs
