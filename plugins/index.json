@@ -4,6 +4,35 @@
   "updatedAt": "2026-10-19",
   "plugins": [
     {
+      "id": "pixiv-illust",
+      "name": "Pixiv 来张图",
+      "version": "1.0.0",
+      "description": "按角色/关键词搜 Pixiv 插画，返回 PID、标题、作者、标签与可直接打开的图链；给过的不会再给第二次，取不到图自动换下一张",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plugins",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "社区",
+        "媒体"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "config",
+        "storage"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.2.0/pixiv-illust-1.0.0.tar.gz",
+      "sha256": "c0015805b61f561521db48f56082ddb10c36473644b081e286d338232856d016",
+      "icon": "",
+      "category": "媒体",
+      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# Pixiv 来张图 pixiv-illust\n\n**「来张初音ミク的图」** —— 按角色 / 关键词搜 Pixiv 插画，返回 PID、标题、作者、标签、分级和\n**可直接打开的图链**。给过的作品不会给第二次；取不到图的会自动换下一张。\n搜索走 `api.lolicon.app/setu/v2`（按 Pixiv 标签检索的公开接口），取图走 `i.pixiv.re` 反代 ——\n**都不需要代理、不需要 Key、不需要 Cookie**。\n\n## 能做什么\n\n- **按角色 / 标签搜**：日文原标签命中率最高（初音ミク / オリジナル / 猫耳）\n- **直接给作品**：贴一条 pixiv 作品链接（`/artworks/<pid>`）或直接给作品号，跳过搜索只回这一张的图链\n- **PID 去重**：给过的作品号记在宿主侧（`plugin-data/pixiv-illust/`），同一个关键词再问会换别的图，\n  重装插件也不丢\n- **取不到图自动换下一张**：内置索引是旧的，里面会留着已被作者删除 / 限制访问的作品。\n  每张候选先探一次图链，非 200 就拉黑（默认 7 天）并换备选，不会让整个请求失败\n- **分级过滤**：全年龄 / R18 / R18G，默认只出全年龄\n\n## 群里怎么问\n\n- 「来张初音ミク的图」\n- 「有没有猫耳的插画」\n- 「这张图的原图链接」+ pixiv 作品链接\n\n## 配置（可选）\n\n`plugins.settings.pixiv-illust` 这一段：\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"pixiv-illust\": {\n        \"ratings\": [\"safe\"],\n        \"maxCount\": 2,\n        \"excludeAI\": false\n      }\n    }\n  }\n}\n```\n\n| 键 | 默认 | 说明 |\n| --- | --- | --- |\n| `ratings` | `[\"safe\"]` | 允许的分级，可多选：`safe` / `r18` / `r18g`。**只有勾上的档才会给出来** —— 只勾 `r18` 就只出 R18（连全年龄也不出） |\n| `allowR18` | `false` | 旧布尔开关，只在没写 `ratings` 时生效（兼容老配置） |\n| `maxCount` | `2` | 一次最多给几张，上限 5 |\n| `poolSize` | `5` | 从候选前 N 张里随机挑，避免永远同一张、也不至于太冷门 |\n| `excludeAI` | `false` | 排除标记为 AI 生成的作品 |\n| `loliconApiUrl` | `https://api.lolicon.app/setu/v2` | 检索接口地址；换自建反代时保持返回同样的 JSON 结构 |\n| `imageUrlTemplate` | `https://pixiv.re/{pid}.png` | 仅兜底用（接口没给 `urls.original` 时）。**简写形式 2026-10-19 实测返回 500**，正常路径用的是接口给的完整反代地址 |\n| `stateCap` | `800` | PID 索引上限（宿主 `cap.storage` 单值只有 32KB，别调太大） |\n| `retryCandidates` | `3` | 除要给的张数外，最多再试几张备选 |\n| `deadTtlDays` | `7` | 取不到图的作品拉黑几天（到期自动放行） |\n\n## 边界（都是实测过的，别当 bug 报）\n\n- **它不代发图片，只给图链**。插件 v1 的 `send` 能力只能发纯文本（单条 800 字），\n  插件进程也不许写文件、`cap.http.request` 只回字符串 —— 所以「下原图 → 落临时文件 → 发图片」\n  这条路在 v1 契约里不存在。模型会把 `imageUrl` 讲出来或按 Markdown 图片语法贴出来。\n- **i.pximg.net 直连不了**：它强制校验 `Referer`，而插件发不出自定义请求头。所以图链一律是\n  `i.pixiv.re` 反代地址（接口的 `urls.original` 就是它，带日期目录的完整路径，实测 200）。\n- **`pixiv.re/{pid}.png` 简写形式现在不可靠**（实测 500）。直接给作品号时只能用它，\n  所以那种情况下插件会明确告诉你「这条链接没验成」，而不是假装成功。\n- **内置接口不返回收藏数**，所以没法「按收藏数挑最热的那张」，排序用随机池。\n- **分级只能按配置定，不能按会话定**：插件 v1 的 `callTool` 不带会话上下文（宿主只传\n  `{ name, args }`），插件认不出「谁在哪个群问的」，所以做不了「这个群可以发 R18」。\n- **标签只升档、不降档**：实测有作品 tags 带 `R-18` 但接口 `r18: false`（作者标签与 xRestrict 不一致）。\n  默认档是全年龄，漏判的代价是往群里发成人图，所以标签命中 `R-18` / `R-18G` 一律按成人档处理（宁可少出几张）。\n- 上游限流（HTTP 429）时会明确说「在限流」，不会静默返回空。\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/pixiv-illust/`，\n再在配置里加上 `plugins.enabledIds` 和 `plugins.settings.pixiv-illust`。\n",
+      "size": 10135,
+      "updatedAt": "2026-10-19"
+    },
+    {
       "id": "gh-activity",
       "name": "GitHub 仓库动态",
       "version": "1.0.0",
