@@ -21,7 +21,7 @@
         "http",
         "config"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/gh-activity-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gh-activity-1.0.0.tar.gz",
       "sha256": "cb367361368dcfc114364736030e8a61c36aa30e07247a050fbaed8eda1689d8",
       "icon": "",
       "category": "工具",
@@ -50,7 +50,7 @@
         "http",
         "config"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/weather-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/weather-1.0.0.tar.gz",
       "sha256": "08fd0e0341cbd5cc3988fda9ae0484746541d8fee81ea0affa0f98c2f66daf9c",
       "icon": "",
       "category": "生活",
@@ -79,7 +79,7 @@
         "http",
         "config"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/translate-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/translate-1.0.0.tar.gz",
       "sha256": "dd26e12b1f41b9ca860804568d77e50e1ed5c9832d537461b4d35d361864a659",
       "icon": "",
       "category": "生活",
@@ -108,7 +108,7 @@
         "http",
         "config"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/hot-topics-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/hot-topics-1.0.0.tar.gz",
       "sha256": "e82e89c232a1913f28e4a167bbc32d481a5b8bf6f5f3b98e594805f04abeb301",
       "icon": "",
       "category": "资讯",
@@ -137,7 +137,7 @@
         "http",
         "config"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/exchange-rate-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/exchange-rate-1.0.0.tar.gz",
       "sha256": "fe487376a7d07b97416ff717b3fb5b31400d6fafc1a6cd31c7cb2fde0fc7026b",
       "icon": "",
       "category": "生活",
@@ -166,7 +166,7 @@
         "http",
         "config"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/ip-info-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/ip-info-1.0.0.tar.gz",
       "sha256": "2bfd82d3675700688c1b197b90f2b87b300fa97856d24047cea01425ecaa0ffe",
       "icon": "",
       "category": "工具",
@@ -194,7 +194,7 @@
         "tools",
         "http"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/v1.1.0/rss-1.0.0.tar.gz",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/rss-1.0.0.tar.gz",
       "sha256": "3bc768a4305b7f1176977243f21dffe47711454960a6b7c030346810d15c21da",
       "icon": "",
       "category": "资讯",

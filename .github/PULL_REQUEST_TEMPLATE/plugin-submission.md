@@ -10,7 +10,8 @@
 - 版本：
 - 包文件：`plugins/packages/<文件名>`
 - sha256：（`node scripts/verify-index.mjs` 会核对，这里贴出来方便一眼看）
-- Release：tag 与 `downloadUrl`
+- `downloadUrl`：`https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/<文件名>`
+  （固定指向滚动 Release `packages`；合进 main 后 CI 会把包传上去，不用自己建 Release）
 
 ## 权限（使用者主要靠这一行判断要不要信）
 
@@ -23,7 +24,7 @@
 
 - 源码仓库：
 - [ ] 跑过 `node scripts/plugin-pack.mjs <目录>`，**自测通过**（它用宿主自己的安装器真装一遍）
-- [ ] 跑过 `node scripts/verify-index.mjs`（结构 + 仓库内产物 + 真下载核对）
+- [ ] 跑过 `node scripts/verify-index.mjs --no-remote`（结构 + 仓库内产物；新包还没上 Release，远端核对由合并后的 CI 做）
 
 ## 可选：发布者签名
 

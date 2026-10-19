@@ -19,5 +19,13 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: "22.x"
-      # 结构 + 仓库内产物 + 真下载核对（真下载这一步会打到 GitHub Release，慢一点但值得）
-      - run: node scripts/verify-index.mjs
+      # PR / push 只做离线核对（结构 + 仓库内产物 + sha256）。
+      # 新包要先合进 main、由 sync-packages 传上 Release，远端才拿得到；
+      # 传完之后那班 workflow 会跑一次真下载核对。定时任务兜底。 
+      - name: 校验索引
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ] || [ "${{ github.event_name }}" = "push" ]; then
+            node scripts/verify-index.mjs --no-remote
+          else
+            node scripts/verify-index.mjs
+          fi
