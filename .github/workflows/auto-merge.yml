@@ -1,0 +1,34 @@
+name: auto-merge trusted plugin PRs
+
+# 可信作者（白名单）的 PR 不再等人点合并：CI（verify）通过后自动 merge。
+# 触发用 pull_request_target 而不是 pull_request：fork PR 的 GITHUB_TOKEN 是只读的，
+# 而这里需要 write 权限去开启 auto-merge。**不 checkout、不执行 PR 里的任何代码**，
+# 只按 author login 判断并调用 gh pr merge --auto，所以这个事件是安全的。
+#
+# 安全边界靠两样东西：
+#   1) 分支保护要求 verify 通过（main 上配置）；
+#   2) CODEOWNERS 把 .github/ 与 scripts/ 划给维护者 —— 作者改 CI/校验脚本时必须维护者批准，
+#      改 plugins/** 则不需要。可信作者不能自己改掉验证逻辑再自动合并。
+#
+# 加新作者：把 GitHub login 加进下面的白名单（数组里的字符串）。
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable:
+    if: >-
+      github.event.pull_request.draft == false &&
+      contains(fromJSON('["Daoguan-king"]'), github.event.pull_request.user.login)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --merge "$PR_URL"

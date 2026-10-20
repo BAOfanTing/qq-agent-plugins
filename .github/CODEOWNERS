@@ -1,0 +1,4 @@
+# 只保护"能改变验证逻辑/发布链"的文件。
+# 插件作者改 plugins/**（索引条目 + 包）不需要维护者；改 CI、校验脚本、发布脚本才需要。
+/.github/ @sakurawwwxh
+/scripts/ @sakurawwwxh
