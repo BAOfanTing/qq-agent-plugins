@@ -99,6 +99,16 @@ node scripts/plugin-publish.mjs examples/plugins/<你的插件>   --index-repo .
 手工做也行，三步：把包放进 `plugins/packages/` → 改 `index.json`（`downloadUrl` 指向 `packages` Release）
 → 跑 `node scripts/verify-index.mjs --no-remote` 再提 PR。
 
+## 可信作者：自动合并
+
+长期合作、已经过审查的作者加进 `.github/workflows/auto-merge.yml` 的白名单后，提 PR 不需要维护者点合并：
+CI 的 `verify` 通过后自动 merge，随后 `sync-packages` 再把包传到 `packages` Release。
+
+安全边界：
+- 分支保护要求 PR + `verify` 通过，不能直接推 main；
+- `CODEOWNERS` 把 `.github/` 与 `scripts/` 划给维护者 —— 作者改插件条目（`plugins/**`）不需要人工，
+  改 CI、校验脚本、发布脚本则必须维护者批准，避免"自己改掉验证逻辑再自动合并"。
+
 ## 长期维护约定
 
 - **产物双份**：包既在 Release（给人下载、给下载量统计），**也提交在仓库里**（给镜像/CDN 走）。
