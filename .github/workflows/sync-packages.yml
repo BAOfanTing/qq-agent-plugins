@@ -10,6 +10,11 @@ on:
     branches: [main]
     paths:
       - 'plugins/**'
+  schedule:
+    # 兜底：auto-merge 用 GITHUB_TOKEN 合并 PR 时，GitHub 不会为它触发的 push 再启动
+    # workflow —— 只靠 push 触发会漏传新包（2026-10-21 抽卡插件就因此 404）。
+    # 每小时补一次；已存在的资产会跳过，重复跑没有副作用。
+    - cron: "17 * * * *"
   workflow_dispatch:
     inputs:
       force:
