@@ -185,12 +185,12 @@
     {
       "id": "jm-album",
       "name": "禁漫漫画查询",
-      "version": "1.0.0",
-      "description": "【成人向】只读查询禁漫（JMComic）本子：关键词搜索 + 车牌号查详情，返回标题/作者/标签/章节页数与封面、网页直链；不下载、不发图。",
+      "version": "2.0.1",
+      "description": "【成人向】只读查询禁漫（JMComic）本子的元数据：关键词搜索 + 车牌号查详情。",
       "author": "Daoguan-king",
       "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
+      "apiVersion": 2,
+      "minVersion": "0.9.5",
       "tags": [
         "社区",
         "媒体",
@@ -200,17 +200,20 @@
         "tools",
         "http",
         "config",
-        "log"
+        "log",
+        "storage",
+        "media",
+        "send"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/jm-album-1.0.0.tar.gz",
-      "sha256": "b0ebd5e3fd79e77f9caa617e96a76bec91dad083b7eecfcccd95bcd5b1835ab8",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/jm-album-2.0.1.tar.gz",
+      "sha256": "9b43ccc16742b7040774b5aed02fc148b99c558aff4fdb24a982d7691fc1c9aa",
       "icon": "",
       "category": "媒体",
       "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 禁漫漫画查询 jm-album\n\n**发个车牌号就有答案**：标题、作者、标签、章节与页数、浏览 / 收藏 / 评论、上架日期、简介，\n外加封面图与网页两条直链。只读查询，不下载图片、不合 PDF、不发图、不上传。\n\n## 能做什么\n\n- **关键词搜**：中文 / 日文 / 作者名 / 作品名片段都能搜，一次最多 20 条，可翻页\n- **车牌号查详情**：纯数字 `350234`、`jm350234`、`JM-350234`、整条 `/album/350234` 链接都认\n- **章节与页数**：逐话取每话页数（默认最多 6 话），只查了前几话时结果里会写明\n- **两条直链**：封面图（第一话第一张）与网页地址，都是给人点开看的\n\n## 群里怎么问\n\n- 「JM 搜一下 熟女」\n- 「JM350234 是什么本子」\n- 「这本多少话、多少页」\n\n## 配置（可选）\n\n- `maxResults` —— 搜索默认给几条，默认 `8`（1–20）\n- `maxChapters` —— 详情里最多逐话查几话，默认 `6`；填 `0` 不查页数，最快\n- `domains` —— 接口域名经常换，默认池不通时把可用域名填进来（一行一个）\n\n## 边界\n\n- **【成人向】**：只在有人明确索要时用，插件不会主动发任何东西\n- **只查不下载**：不下图片、不合 PDF、不上传、不发图；链接由人自己点开\n- **Linux 网络隔离下不可用**：签名接口要 App UA 与 `token` 头，宿主 `cap.http.request` 透传不了，\n  所以请求由插件自己 `fetch`；`unshare --net` 的宿主上会一律返回 `E_NETWORK`\n- 搜索接口的 `total` 封顶 10000，不是真实总数\n- 网页地址是给浏览器用的；机器人去抓会被 Cloudflare 403\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/jm-album/`。",
-      "size": 18198,
-      "updatedAt": "2026-10-20",
+      "readme": "# 禁漫漫画查询 jm-album\n\n**发个车牌号就有答案**：标题、作者、标签、话数与页数、浏览/收藏/评论、收录日期、简介，外加封面与网页两条直链。只查不下载，默认什么都不发。\n\n## 能做什么\n\n- **关键词搜**：中文 / 日文 / 作者名 / 作品名片段都能搜，一次最多 20 条，可翻页\n- **车牌号查详情**：纯数字 `350234`、`jm350234`、`JM-350234`、整条 `/album/350234` 链接都认\n- **章节与页数**：逐话取每话页数（默认最多 6 话），只查了前几话时结果里会写明\n- **可选发封面**：设置里打开后，**在详情（album_detail）里**群聊会把封面图直接发出来（默认关，用官方方形封面、不会竖切错位）；搜索只给列表、不带图。容器化部署发不了文件时自动改成一条转发指令\n\n## 群里怎么问\n\n- 「JM 搜一下 熟女」\n- 「jm350234 是哪本，多少话？」\n- 「再帮我看看 1485395 的详情」\n\n## 配置（可选）\n\n- `maxResults` —— 搜索默认返回几条，默认 `8`\n- `maxChapters` —— 详情里最多逐话查几话，默认 `6`；填 `0` 不查页数\n- `sendCover` —— 允许把封面图发到群里，默认关\n- `sendMode` —— `auto` / `forward` / `host`，默认 `auto`\n- `domains` —— 接口域名换掉时填这里，不用改代码\n\n## 边界\n\n- **【成人向】**：只在有人明确索要时用，插件不会主动发言或推荐\n- **只查不下载**：不合 PDF、不下载整本、不上传；封面是唯一会下载的东西，默认关、仅群聊、单张 8MB 上限\n- **Linux 网络隔离下也能用**：2.0.0 起请求走宿主（需要宿主 0.9.5 以上）\n- 搜索接口的 `total` 封顶 10000；`pageUrl` 给浏览器用，机器人去抓会被 Cloudflare 403\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/jm-album/`。",
+      "size": 22625,
+      "updatedAt": "2026-10-25",
       "nsfw": true
     },
     {
