@@ -357,6 +357,40 @@
       "size": 4591,
       "updatedAt": "2026-10-17",
       "downloads": 27
+    },
+    {
+      "id": "pawchive-search",
+      "name": "爪上搜 Pawchive",
+      "version": "2.0.4",
+      "description": "【成人向】爪上（Pawchive，站点 pawchive.pw，也叫「爪」「爪上」「爪上搜」）的搜图与发图插件：按关键词搜作品、查作者更新、随机来一篇，可直接把图发到群里（默认开，可在设置里关）。",
+      "author": "Daoguan-king",
+      "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
+      "apiVersion": 2,
+      "minVersion": "0.9.6",
+      "tags": [
+        "社区",
+        "媒体",
+        "成人向"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "storage",
+        "config",
+        "log",
+        "media",
+        "send"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/pawchive-search-2.0.4.tar.gz",
+      "sha256": "bb6235ca09a8e646d3a5c961c16776a4be80e7b1a970a22eb3d55fb8e6cac771",
+      "icon": "",
+      "category": "媒体",
+      "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# 爪上搜 pawchive-search\n\n**一句话卖点**：Pawchive（爪上）检索与发图：搜作品、查作者、追更、随机抽，命中后直接发图到群。\n\n## 能做什么\n- 搜作品：`search` 传 `kw`，返回作品名、作者、作品页链接、原图与缩略图直链。\n- 发图：群里默认发一张（`sent=true`），发不出去时给 `forward` 转发指令。\n- 按作者查：`creator` 传 `name` 或作者页链接，解析作者号列最新作品；`checkUpdate=true` 变追更。\n- 随机：`random`。\n\n## 群里怎么问\n- 爪上搜一下 frieren 的图\n- 爪有啥米哈游的图没\n\n## 配置\n- `sendImage` 是否发图、`sendMode` 选 `auto`/`forward`/`host`、`sendCount` 1-3、`maxImageMb` 默认 20。\n\n## 边界\n- 成人向：索引 patreon / fanbox / discord 的成人作品，只在允许的群开。\n- 文件有三种状态：都在 / 只有缩略图 / 都没了。`attachmentUrl` 是原图、可能 404；`thumbnailUrl` 更容易命中但不保证；都没有只给作品页。\n- 容器部署时协议端看不到宿主 media 目录，`cap.send.file` 会失败；插件自动改成给 `forward`。**首次发图可能报一次错，属正常探路**，之后窗口 30 分钟起翻倍、最长 12 小时才重试，成功一次清零，原始报错只进日志。\n- 转发给 `send_group_file` 用 `thumbnailUrl`；已发过就别再转发。\n- 只支持群聊，私聊只给链接。\n- `httpDomains` 只放行 `pawchive.pw` 及子域。\n- Linux 隔离下按作者名查不可用；给作者链接或 `service`+`id` 时其余可用。\n- tags 常是 postgres 数组字符串，解析成数组；约四成 null。\n- 会限流：连发回 429，插件串行并退避重试一次。\n\n## 装\n控制台左侧「插件」→ 安装 → 启用；手工：拷到 `$DATA_DIR/plugins/pawchive-search/`。",
+      "size": 26062,
+      "updatedAt": "2026-10-24",
+      "nsfw": true
     }
   ]
 }
