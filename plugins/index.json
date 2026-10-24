@@ -4,120 +4,39 @@
   "updatedAt": "2026-10-20",
   "plugins": [
     {
-      "id": "gh-activity",
-      "name": "GitHub 仓库动态",
+      "id": "bilibili",
+      "name": "B 站",
       "version": "1.0.0",
-      "description": "查一个 GitHub 仓库最近怎么样：star/issue 数、最近几次提交、最新 issue 标题、最后推送时间（公开 API，不需要 Key）",
+      "description": "搜索与查看 B 站视频、UP 主、热门、评论、字幕；把视频下载合流后发到群里；无字幕视频用语音转写读文稿；点赞/投币/收藏/关注/评论/发弹幕（写操作需管理员逐次批准并按天限额）；聊天内扫码登录",
       "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/gh-activity",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/bilibili",
+      "apiVersion": 2,
+      "minVersion": "0.9.5",
       "tags": [
         "官方",
-        "工具"
+        "媒体"
       ],
       "capabilities": [
         "tools",
         "http",
-        "config"
+        "config",
+        "secrets",
+        "approval",
+        "quota",
+        "media",
+        "send",
+        "log"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gh-activity-1.0.0.tar.gz",
-      "sha256": "cb367361368dcfc114364736030e8a61c36aa30e07247a050fbaed8eda1689d8",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/bilibili-1.0.0.tar.gz",
+      "sha256": "9f635eb8e01e39a131b868e17c2ad860b716aafe48d93275bcbc54a87128d4de",
       "icon": "",
-      "category": "工具",
+      "category": "媒体",
       "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
-      "readmeUrl": "",
-      "readme": "# GitHub 仓库动态 gh-activity\n\n**这个项目还活着吗** —— 一条命令看 star、最近提交、最新 issue、最后推送时间。\n走 GitHub 公开 API，**不需要 Key**。\n\n## 能做什么\n\n- **一眼看活跃度**：star / fork、未关闭 issue 与 PR 数、最后推送时间、是否已归档\n- **最近在改什么**：最近几次提交（作者 + 标题 + 时间）\n- **最近在讨论什么**：最新几条 issue 标题\n\n## 群里怎么问\n\n- 「sakurawwwxh/qq-agent-plus 最近还更新吗」\n- 「facebook/react 现在多少 star」\n- 「这个库最近有没有人提 issue」+ 仓库地址\n\n## 配置（可选）\n\n- `perPage` —— 返回几条提交 / issue，默认 5（1-20）\n\n```json\n{ \"plugins\": { \"settings\": { \"gh-activity\": { \"perPage\": 5 } } } }\n```\n\n## 边界\n\n- **只读**：不 star、不提 issue、不改任何东西；没有 `send`，不能在群里发言\n- **不缓存**：每次即时查 GitHub —— 数字是最新的，也会消耗未认证的速率额度\n- 提交 / issue 这两条子请求被限频或失败时，结果里带 `partial: true` 并写明哪一条没取到（不会把「没查到」说成「没有」）\n- issue 正文很长的仓库（如 vscode / react）可能撞上宿主 40000 字符的取值上限：这时会先缩小窗口重试，仍不行就如实标 `partial`\n- 请求经宿主的 `cap.http.request`（内网地址被拦、有体积上限与超时，日志里查得到）\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/gh-activity/`。\n",
-      "size": 4807,
-      "updatedAt": "2026-10-17",
-      "downloads": 22
-    },
-    {
-      "id": "weather",
-      "name": "天气",
-      "version": "1.0.0",
-      "description": "查一个城市现在的天气与未来三天（最高/最低温、降水概率、天气现象），走 Open-Meteo 公开接口，不需要 Key",
-      "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/weather",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
-      "tags": [
-        "官方",
-        "生活"
-      ],
-      "capabilities": [
-        "tools",
-        "http",
-        "config"
-      ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/weather-1.0.0.tar.gz",
-      "sha256": "08fd0e0341cbd5cc3988fda9ae0484746541d8fee81ea0affa0f98c2f66daf9c",
-      "icon": "",
-      "category": "生活",
-      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
-      "readmeUrl": "",
-      "readme": "# 天气 weather\n\n**问一句就有答案**：上海今天要不要带伞、Tokyo 明天冷不冷。\n数据来自 Open-Meteo 公开接口，**不需要 Key**，装上就能用。\n\n## 能做什么\n\n- **今天的实况**：温度、体感、天气现象、湿度、风速，以及今天的最高/最低温与降水概率\n- **未来三天**：每天的最高 / 最低温与降水概率（从明天起算）\n- **随口问**：不说城市就用配置里的默认城市\n- **城市名**：中国城市用中文没问题；**境外城市请用英文名**（Tokyo / New York / Seoul）—— Open-Meteo 的中文地理编码只收录了中国城市，查「东京」会匹配到江苏的一个村子\n\n## 群里怎么问\n\n- 「上海今天要带伞吗」\n- 「Tokyo 未来三天冷不冷」\n- 「北京现在几度」\n\n## 配置（可选）\n\n- `defaultCity` —— 没说城市时用哪个，默认 `Beijing`\n\n```json\n{ \"plugins\": { \"settings\": { \"weather\": { \"defaultCity\": \"上海\" } } } }\n```\n\n## 边界\n\n- **不能在群里自己发言**：没有 `send` 能力；想每天早上定时播报要等 v1.1\n- 只读：不写任何东西。请求经宿主（内网地址被拦、有体积上限与超时）\n- 不缓存：每次都是现查，所以数据是最新的\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/weather/`。\n",
-      "size": 4591,
-      "updatedAt": "2026-10-17",
-      "downloads": 27
-    },
-    {
-      "id": "translate",
-      "name": "翻译",
-      "version": "1.0.0",
-      "description": "把一句话或一小段文本翻成另一种语言（中/英/日/韩互译），走 MyMemory 公开接口，不需要 Key",
-      "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/translate",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
-      "tags": [
-        "官方",
-        "生活"
-      ],
-      "capabilities": [
-        "tools",
-        "http",
-        "config"
-      ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/translate-1.0.0.tar.gz",
-      "sha256": "dd26e12b1f41b9ca860804568d77e50e1ed5c9832d537461b4d35d361864a659",
-      "icon": "",
-      "category": "生活",
-      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
-      "readmeUrl": "",
-      "readme": "# 翻译 translate\n\n**这句英文什么意思**、**帮我翻成日语** —— 中 / 英 / 日 / 韩互译。\n走 MyMemory 公开接口，**不需要 Key**（DeepL / 百度 / 腾讯那几家都要）。\n\n## 能做什么\n\n- **四个语种互译**：中（`zh-CN`）、英（`en`）、日（`ja`）、韩（`ko`）\n- **不用指定源语言**：只给原文和目标语言，它自己判断\n- **一次一小段**：上游按**字节**限长 500 字节（约 166 个汉字，或 500 个英文/数字），超了会提示分段\n\n## 群里怎么问\n\n- 「把『今天真热』翻成日语」\n- 「这句英文什么意思：It works on my machine」\n- 「帮我翻成英文：明天下午三点开会，改到 404」\n\n## 配置（可选）\n\n- `defaultTo` —— 没说目标语言时用哪个，默认 `zh-CN`。想默认中译英就改成 `en`\n\n```json\n{ \"plugins\": { \"settings\": { \"translate\": { \"defaultTo\": \"en\" } } } }\n```\n\n## 边界\n\n- **译文质量有限**：MyMemory 是公开的免费记忆库，专业内容请人工校对\n- 它有个已知的坑：**有时会把原文原样返回**（HTTP 200、不报错）。这种情况结果里带 `warning`，\n  不会把「没翻」讲成「翻完了」\n- 匿名额度按天算，用完当天不可用，第二天恢复\n- 只读，不能发言\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/translate/`。\n",
-      "size": 5413,
-      "updatedAt": "2026-10-17",
-      "downloads": 9
-    },
-    {
-      "id": "hot-topics",
-      "name": "热点",
-      "version": "1.0.0",
-      "description": "抓 V2EX 或 Hacker News 的热帖榜，整理成标题+链接+热度几行，两个源都不需要 Key",
-      "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/hot-topics",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
-      "tags": [
-        "官方",
-        "资讯"
-      ],
-      "capabilities": [
-        "tools",
-        "http",
-        "config"
-      ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/hot-topics-1.0.0.tar.gz",
-      "sha256": "e82e89c232a1913f28e4a167bbc32d481a5b8bf6f5f3b98e594805f04abeb301",
-      "icon": "",
-      "category": "资讯",
-      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
-      "readmeUrl": "",
-      "readme": "# 热点 hot-topics\n\n**科技圈当时在聊什么** —— V2EX / Hacker News 的热帖榜，整理成「标题 + 链接 + 热度」。\n两个源都**不需要 Key**。\n\n## 能做什么\n\n- **两个榜**：V2EX（默认）与 Hacker News；每次几条可调（默认 5，最多 20）\n- **只给榜单**：标题、链接、热度 —— 正文与摘要不抓，怎么念由模型决定\n- **分别取源**：V2EX 直接读热帖接口；HN 先取 id 榜再并行取详情\n\n## 群里怎么问\n\n- 「今天有啥热点」\n- 「V2EX 现在在聊什么」\n- 「HN 头条前五条」\n\n## 配置（可选，主要给测试 / 镜像用）\n\n- `v2exUrl` —— 覆盖 V2EX 热帖地址\n- `hnApiBase` —— 覆盖 HN 接口根（`/topstories.json` 与 `/item/<id>.json` 拼在它后面）\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"hot-topics\": {\n        \"v2exUrl\": \"https://www.v2ex.com/api/topics/hot.json\",\n        \"hnApiBase\": \"https://hacker-news.firebaseio.com/v0\"\n      }\n    }\n  }\n}\n```\n\n指到内网地址会被宿主的网络守卫拦下 —— 有意的：插件不许绕过宿主自己上网。\n\n## 边界\n\n- **只读**，不能发言；不做定时播报（要等 v1.1 的 `send`）\n- 排序与站点页面不一定逐条一致：读的是它们的公开接口\n- 上游改接口会返回可读错误（例如「HN 的条目详情一条都没取到」），不会静默给空榜\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/hot-topics/`。\n",
-      "size": 4807,
-      "updatedAt": "2026-10-17",
-      "downloads": 22
+      "readmeUrl": "https://github.com/sakurawwwxh/qq-agent-plus/blob/main/docs/BILIBILI.md",
+      "readme": "# B 站 bilibili\n\n**读 + 观看 + 互动**：搜索/看懂视频（字幕、语音转写、弹幕密度、评论）、把视频合流发到群里、点赞/投币/收藏/关注/评论/弹幕。\n\n## 登录\n控制台 → 插件 → B 站 → 扫码登录（推荐），或在聊天里对机器人说「登录B站」。Cookie 加密保存。\n\n## 写操作信任模型\n每个写动作独立开关（默认关）；开启后每次执行都要管理员批准**具体目标**，批准一次只管一次；同插件两次写至少间隔 60 秒；当天有配额；失败自动退还。\n\n## 说明\n- 不做投稿、发动态；番剧/付费/地区限制视频拿不到流。\n- 无字幕视频的语音转写需要宿主配置过语音识别；帧画面描述需要视觉模型。",
+      "size": 31821,
+      "updatedAt": "2026-10-24",
+      "downloads": 0
     },
     {
       "id": "exchange-rate",
@@ -149,6 +68,92 @@
       "downloads": 16
     },
     {
+      "id": "gacha",
+      "name": "抽卡",
+      "version": "1.0.0",
+      "description": "群友说「抽一张卡」就抽一张：六级卡池 N/R/SR/SSR/UR/???（★1-★6，概率固定不可改）+ 词条，支持十连与个人图鉴。",
+      "author": "Daoguan-king",
+      "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "社区",
+        "娱乐",
+        "抽卡"
+      ],
+      "capabilities": [
+        "tools",
+        "storage",
+        "config",
+        "log"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gacha-1.0.0.tar.gz",
+      "sha256": "644a5dc07829dacf2c653214ea44e7844201dc25c69c2f11b0e8159a01a1d585",
+      "icon": "",
+      "category": "娱乐",
+      "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# 抽卡 gacha\n\n群友说「抽一张卡」就抽一张：**等级 + 星级 + 卡名 + 词条**。六级卡池概率固定，\n插件只掷骰子，卡名与词条由模型创作。零依赖、单文件、**不联网、不写文件**，\n图鉴与统计走宿主的 `cap.storage`。\n\n## 能做什么\n\n- **抽卡**：`N` / `R` / `SR` / `SSR` / `UR` / `???` 六级，概率固定 52% / 26% / 13% / 6% / 2.4% / 0.6%，星级 ★1–★6\n- **多连**：一次最多 10 张，逐张出等级与词条\n- **个人图鉴**：抽到的稀有卡与自创卡记在 `who` 名下（每人 24 条），随时用 `card_dex` 查\n- **两套调性**：`tone=yang`（默认，阴阳怪气，只损事 / 物 / 泛化身份）/ `tone=neutral`（日常抽象）\n\n## 群里怎么问\n\n- 「抽一张卡」「来张卡」「@Bot 抽卡」\n- 「十连」「帮我抽五张」\n- 「看看我的图鉴」\n\n## 配置（可选）\n\n- `tone` —— 卡片风格，默认 `yang`；改 `neutral` 回到日常风格，不影响概率\n- `flavorMode` —— 卡名与词条谁写，默认 `free`（模型自创，最像活人）；`extend` 用插件给的卡名，`off` 全照卡池\n- `maxCount` —— 一次最多几张，默认 `10`\n- `recordHistory` —— 是否记个人图鉴与全局统计，默认开\n\n## 边界\n\n- **概率不可改**：整数万分比写死（5200 / 2600 / 1300 / 600 / 240 / 60，合计 10000）\n- **只能抽卡**：不发言、不发图、不联网、不写文件\n- **阴阳有红线**：不点名真人、不碰政治人物、不做群体歧视、不写色情；`yang` 的尺度由模型把握，插件执行时无法判定\n- 图鉴受宿主存储上限约束（单值 32KB / 总量 256KB），超了只降级不失败\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/gacha/`。"
+    },
+    {
+      "id": "gh-activity",
+      "name": "GitHub 仓库动态",
+      "version": "1.0.0",
+      "description": "查一个 GitHub 仓库最近怎么样：star/issue 数、最近几次提交、最新 issue 标题、最后推送时间（公开 API，不需要 Key）",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/gh-activity",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "官方",
+        "工具"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "config"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gh-activity-1.0.0.tar.gz",
+      "sha256": "cb367361368dcfc114364736030e8a61c36aa30e07247a050fbaed8eda1689d8",
+      "icon": "",
+      "category": "工具",
+      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# GitHub 仓库动态 gh-activity\n\n**这个项目还活着吗** —— 一条命令看 star、最近提交、最新 issue、最后推送时间。\n走 GitHub 公开 API，**不需要 Key**。\n\n## 能做什么\n\n- **一眼看活跃度**：star / fork、未关闭 issue 与 PR 数、最后推送时间、是否已归档\n- **最近在改什么**：最近几次提交（作者 + 标题 + 时间）\n- **最近在讨论什么**：最新几条 issue 标题\n\n## 群里怎么问\n\n- 「sakurawwwxh/qq-agent-plus 最近还更新吗」\n- 「facebook/react 现在多少 star」\n- 「这个库最近有没有人提 issue」+ 仓库地址\n\n## 配置（可选）\n\n- `perPage` —— 返回几条提交 / issue，默认 5（1-20）\n\n```json\n{ \"plugins\": { \"settings\": { \"gh-activity\": { \"perPage\": 5 } } } }\n```\n\n## 边界\n\n- **只读**：不 star、不提 issue、不改任何东西；没有 `send`，不能在群里发言\n- **不缓存**：每次即时查 GitHub —— 数字是最新的，也会消耗未认证的速率额度\n- 提交 / issue 这两条子请求被限频或失败时，结果里带 `partial: true` 并写明哪一条没取到（不会把「没查到」说成「没有」）\n- issue 正文很长的仓库（如 vscode / react）可能撞上宿主 40000 字符的取值上限：这时会先缩小窗口重试，仍不行就如实标 `partial`\n- 请求经宿主的 `cap.http.request`（内网地址被拦、有体积上限与超时，日志里查得到）\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/gh-activity/`。\n",
+      "size": 4807,
+      "updatedAt": "2026-10-17",
+      "downloads": 22
+    },
+    {
+      "id": "hot-topics",
+      "name": "热点",
+      "version": "1.0.0",
+      "description": "抓 V2EX 或 Hacker News 的热帖榜，整理成标题+链接+热度几行，两个源都不需要 Key",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/hot-topics",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "官方",
+        "资讯"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "config"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/hot-topics-1.0.0.tar.gz",
+      "sha256": "e82e89c232a1913f28e4a167bbc32d481a5b8bf6f5f3b98e594805f04abeb301",
+      "icon": "",
+      "category": "资讯",
+      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# 热点 hot-topics\n\n**科技圈当时在聊什么** —— V2EX / Hacker News 的热帖榜，整理成「标题 + 链接 + 热度」。\n两个源都**不需要 Key**。\n\n## 能做什么\n\n- **两个榜**：V2EX（默认）与 Hacker News；每次几条可调（默认 5，最多 20）\n- **只给榜单**：标题、链接、热度 —— 正文与摘要不抓，怎么念由模型决定\n- **分别取源**：V2EX 直接读热帖接口；HN 先取 id 榜再并行取详情\n\n## 群里怎么问\n\n- 「今天有啥热点」\n- 「V2EX 现在在聊什么」\n- 「HN 头条前五条」\n\n## 配置（可选，主要给测试 / 镜像用）\n\n- `v2exUrl` —— 覆盖 V2EX 热帖地址\n- `hnApiBase` —— 覆盖 HN 接口根（`/topstories.json` 与 `/item/<id>.json` 拼在它后面）\n\n```json\n{\n  \"plugins\": {\n    \"settings\": {\n      \"hot-topics\": {\n        \"v2exUrl\": \"https://www.v2ex.com/api/topics/hot.json\",\n        \"hnApiBase\": \"https://hacker-news.firebaseio.com/v0\"\n      }\n    }\n  }\n}\n```\n\n指到内网地址会被宿主的网络守卫拦下 —— 有意的：插件不许绕过宿主自己上网。\n\n## 边界\n\n- **只读**，不能发言；不做定时播报（要等 v1.1 的 `send`）\n- 排序与站点页面不一定逐条一致：读的是它们的公开接口\n- 上游改接口会返回可读错误（例如「HN 的条目详情一条都没取到」），不会静默给空榜\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/hot-topics/`。\n",
+      "size": 4807,
+      "updatedAt": "2026-10-17",
+      "downloads": 22
+    },
+    {
       "id": "ip-info",
       "name": "IP 查询",
       "version": "1.0.0",
@@ -176,63 +181,6 @@
       "size": 5038,
       "updatedAt": "2026-10-17",
       "downloads": 8
-    },
-    {
-      "id": "rss",
-      "name": "RSS 订阅",
-      "version": "1.0.0",
-      "description": "抓一个 RSS/Atom 订阅源的最新几篇，整理成标题+链接+时间（订阅地址你给，插件不自带源）",
-      "author": "sakurawwwxh",
-      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/rss",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
-      "tags": [
-        "官方",
-        "资讯"
-      ],
-      "capabilities": [
-        "tools",
-        "http"
-      ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/rss-1.0.0.tar.gz",
-      "sha256": "3bc768a4305b7f1176977243f21dffe47711454960a6b7c030346810d15c21da",
-      "icon": "",
-      "category": "资讯",
-      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
-      "readmeUrl": "",
-      "readme": "# RSS 订阅 rss\n\n**这个博客最近更新了啥** —— 给一个 RSS / Atom 地址，返回最新几篇的标题、链接、时间。\n**插件不自带任何源**，地址每次由调用方给。\n\n## 能做什么\n\n- **任意 RSS / Atom 源**：博客、新闻站、播客都行\n- **要几条可调**（默认 5，最多 20）\n- **只给清单**：标题 / 链接 / 时间；要不要看正文由模型决定（它还有 `web_fetch`）\n\n## 群里怎么问\n\n- 「这个博客最近更新了啥」+ 订阅地址\n- 「帮我看看这个 RSS 有没有新文章」\n- 「这个播客最近三期的标题」\n\n## 配置\n\n**不用填** —— `capabilities` 里没有 `config`，这个插件不读设置。\n\n## 边界\n\n- **解析是「够用」级别**：零依赖、不引 XML 库（v1 只收零依赖插件），遇到不规则的源可能解析不全\n- 给的地址是个网页而不是 feed 时**明确报错**（提示「这多半是博客首页」），不硬解析成空条目\n- 响应过大被宿主截断时，结果里带 `truncated: true` 并说明只解析了前面一段\n- 没有条目会明确报错，不会静默返回空；日期认不出就原样给出，不编造时间\n- 只读，不能发言；不做定时推送 / 订阅管理\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/rss/`。\n",
-      "size": 5959,
-      "updatedAt": "2026-10-17",
-      "downloads": 15
-    },
-    {
-      "id": "pixiv-illust",
-      "name": "Pixiv 来张图",
-      "version": "1.0.1",
-      "description": "按角色/关键词搜 Pixiv 插画，返回 PID、标题、作者、标签与可直接打开的图链；给过的不会再给第二次，取不到图自动换下一张",
-      "author": "Daoguan-king",
-      "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
-      "tags": [
-        "社区",
-        "媒体"
-      ],
-      "capabilities": [
-        "tools",
-        "http",
-        "config",
-        "storage"
-      ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/pixiv-illust-1.0.1.tar.gz",
-      "sha256": "7dca2856ff5fa60887e329dfe075efe9afccbe22b28abfd73c87fe321ca7e5c6",
-      "icon": "",
-      "category": "媒体",
-      "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
-      "readmeUrl": "",
-      "readme": "# Pixiv 来张图 pixiv-illust\n\n**「来张初音ミク的图」**：按角色 / 关键词搜 Pixiv 插画，返回 PID、标题、作者、标签、分级和\n可直接打开的图链。给过的作品不会再给第二次，取不到图的自动换下一张。\n搜索走 `api.lolicon.app`、取图走 `i.pixiv.re` 反代 —— **不需要代理、不需要 Key**。\n\n## 能做什么\n\n- **按角色 / 标签搜**：日文原标签命中率最高（初音ミク / オリジナル / 猫耳）\n- **直接给作品**：贴 pixiv 作品链接或给作品号，跳过搜索只回这一张的图链\n- **PID 去重**：给过的作品记在 `plugin-data/pixiv-illust/`，同一个关键词再问会换别的图，重装也不丢\n- **取不到图自动换下一张**：候选先探一次图链，非 200 就拉黑（默认 7 天）并换备选\n- **分级过滤**：全年龄 / R18 / R18G，默认只出全年龄\n\n## 群里怎么问\n\n- 「来张初音ミク的图」\n- 「有没有猫耳的插画」\n- 「这张图的原图链接」+ pixiv 作品链接\n\n## 配置（可选）\n\n- `ratings` —— 允许的分级，默认 `[\"safe\"]`；可多选 `safe` / `r18` / `r18g`，只有勾上的档才会给\n- `maxCount` —— 一次最多给几张，默认 `2`（上限 5）\n- `excludeAI` —— 排除 AI 生成的作品，默认关\n- `proxyUrl` —— 只有切到 pixiv.net 后端才需要，内置接口不用代理\n\n```json\n{ \"plugins\": { \"settings\": { \"pixiv-illust\": { \"ratings\": [\"safe\"], \"maxCount\": 2 } } } }\n```\n\n## 边界\n\n- **它不代发图片，只给图链**：插件 v1 没有发图能力，图要自己点开\n- 链接在 QQ 里可能不自动识别，复制到浏览器打开更稳\n- 只读：不点赞、不收藏、不写任何东西\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/pixiv-illust/`。",
-      "size": 12609,
-      "updatedAt": "2026-10-19"
     },
     {
       "id": "jm-album",
@@ -266,32 +214,61 @@
       "nsfw": true
     },
     {
-      "id": "gacha",
-      "name": "抽卡",
-      "version": "1.0.0",
-      "description": "群友说「抽一张卡」就抽一张：六级卡池 N/R/SR/SSR/UR/???（★1-★6，概率固定不可改）+ 词条，支持十连与个人图鉴。",
+      "id": "pixiv-illust",
+      "name": "Pixiv 来张图",
+      "version": "1.0.1",
+      "description": "按角色/关键词搜 Pixiv 插画，返回 PID、标题、作者、标签与可直接打开的图链；给过的不会再给第二次，取不到图自动换下一张",
       "author": "Daoguan-king",
       "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
       "apiVersion": 1,
       "minVersion": "0.8.5",
       "tags": [
         "社区",
-        "娱乐",
-        "抽卡"
+        "媒体"
       ],
       "capabilities": [
         "tools",
-        "storage",
+        "http",
         "config",
-        "log"
+        "storage"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gacha-1.0.0.tar.gz",
-      "sha256": "644a5dc07829dacf2c653214ea44e7844201dc25c69c2f11b0e8159a01a1d585",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/pixiv-illust-1.0.1.tar.gz",
+      "sha256": "7dca2856ff5fa60887e329dfe075efe9afccbe22b28abfd73c87fe321ca7e5c6",
       "icon": "",
-      "category": "娱乐",
+      "category": "媒体",
       "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 抽卡 gacha\n\n群友说「抽一张卡」就抽一张：**等级 + 星级 + 卡名 + 词条**。六级卡池概率固定，\n插件只掷骰子，卡名与词条由模型创作。零依赖、单文件、**不联网、不写文件**，\n图鉴与统计走宿主的 `cap.storage`。\n\n## 能做什么\n\n- **抽卡**：`N` / `R` / `SR` / `SSR` / `UR` / `???` 六级，概率固定 52% / 26% / 13% / 6% / 2.4% / 0.6%，星级 ★1–★6\n- **多连**：一次最多 10 张，逐张出等级与词条\n- **个人图鉴**：抽到的稀有卡与自创卡记在 `who` 名下（每人 24 条），随时用 `card_dex` 查\n- **两套调性**：`tone=yang`（默认，阴阳怪气，只损事 / 物 / 泛化身份）/ `tone=neutral`（日常抽象）\n\n## 群里怎么问\n\n- 「抽一张卡」「来张卡」「@Bot 抽卡」\n- 「十连」「帮我抽五张」\n- 「看看我的图鉴」\n\n## 配置（可选）\n\n- `tone` —— 卡片风格，默认 `yang`；改 `neutral` 回到日常风格，不影响概率\n- `flavorMode` —— 卡名与词条谁写，默认 `free`（模型自创，最像活人）；`extend` 用插件给的卡名，`off` 全照卡池\n- `maxCount` —— 一次最多几张，默认 `10`\n- `recordHistory` —— 是否记个人图鉴与全局统计，默认开\n\n## 边界\n\n- **概率不可改**：整数万分比写死（5200 / 2600 / 1300 / 600 / 240 / 60，合计 10000）\n- **只能抽卡**：不发言、不发图、不联网、不写文件\n- **阴阳有红线**：不点名真人、不碰政治人物、不做群体歧视、不写色情；`yang` 的尺度由模型把握，插件执行时无法判定\n- 图鉴受宿主存储上限约束（单值 32KB / 总量 256KB），超了只降级不失败\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/gacha/`。"
+      "readme": "# Pixiv 来张图 pixiv-illust\n\n**「来张初音ミク的图」**：按角色 / 关键词搜 Pixiv 插画，返回 PID、标题、作者、标签、分级和\n可直接打开的图链。给过的作品不会再给第二次，取不到图的自动换下一张。\n搜索走 `api.lolicon.app`、取图走 `i.pixiv.re` 反代 —— **不需要代理、不需要 Key**。\n\n## 能做什么\n\n- **按角色 / 标签搜**：日文原标签命中率最高（初音ミク / オリジナル / 猫耳）\n- **直接给作品**：贴 pixiv 作品链接或给作品号，跳过搜索只回这一张的图链\n- **PID 去重**：给过的作品记在 `plugin-data/pixiv-illust/`，同一个关键词再问会换别的图，重装也不丢\n- **取不到图自动换下一张**：候选先探一次图链，非 200 就拉黑（默认 7 天）并换备选\n- **分级过滤**：全年龄 / R18 / R18G，默认只出全年龄\n\n## 群里怎么问\n\n- 「来张初音ミク的图」\n- 「有没有猫耳的插画」\n- 「这张图的原图链接」+ pixiv 作品链接\n\n## 配置（可选）\n\n- `ratings` —— 允许的分级，默认 `[\"safe\"]`；可多选 `safe` / `r18` / `r18g`，只有勾上的档才会给\n- `maxCount` —— 一次最多给几张，默认 `2`（上限 5）\n- `excludeAI` —— 排除 AI 生成的作品，默认关\n- `proxyUrl` —— 只有切到 pixiv.net 后端才需要，内置接口不用代理\n\n```json\n{ \"plugins\": { \"settings\": { \"pixiv-illust\": { \"ratings\": [\"safe\"], \"maxCount\": 2 } } } }\n```\n\n## 边界\n\n- **它不代发图片，只给图链**：插件 v1 没有发图能力，图要自己点开\n- 链接在 QQ 里可能不自动识别，复制到浏览器打开更稳\n- 只读：不点赞、不收藏、不写任何东西\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/pixiv-illust/`。",
+      "size": 12609,
+      "updatedAt": "2026-10-19"
+    },
+    {
+      "id": "rss",
+      "name": "RSS 订阅",
+      "version": "1.0.0",
+      "description": "抓一个 RSS/Atom 订阅源的最新几篇，整理成标题+链接+时间（订阅地址你给，插件不自带源）",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/rss",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "官方",
+        "资讯"
+      ],
+      "capabilities": [
+        "tools",
+        "http"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/rss-1.0.0.tar.gz",
+      "sha256": "3bc768a4305b7f1176977243f21dffe47711454960a6b7c030346810d15c21da",
+      "icon": "",
+      "category": "资讯",
+      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# RSS 订阅 rss\n\n**这个博客最近更新了啥** —— 给一个 RSS / Atom 地址，返回最新几篇的标题、链接、时间。\n**插件不自带任何源**，地址每次由调用方给。\n\n## 能做什么\n\n- **任意 RSS / Atom 源**：博客、新闻站、播客都行\n- **要几条可调**（默认 5，最多 20）\n- **只给清单**：标题 / 链接 / 时间；要不要看正文由模型决定（它还有 `web_fetch`）\n\n## 群里怎么问\n\n- 「这个博客最近更新了啥」+ 订阅地址\n- 「帮我看看这个 RSS 有没有新文章」\n- 「这个播客最近三期的标题」\n\n## 配置\n\n**不用填** —— `capabilities` 里没有 `config`，这个插件不读设置。\n\n## 边界\n\n- **解析是「够用」级别**：零依赖、不引 XML 库（v1 只收零依赖插件），遇到不规则的源可能解析不全\n- 给的地址是个网页而不是 feed 时**明确报错**（提示「这多半是博客首页」），不硬解析成空条目\n- 响应过大被宿主截断时，结果里带 `truncated: true` 并说明只解析了前面一段\n- 没有条目会明确报错，不会静默返回空；日期认不出就原样给出，不编造时间\n- 只读，不能发言；不做定时推送 / 订阅管理\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/rss/`。\n",
+      "size": 5959,
+      "updatedAt": "2026-10-17",
+      "downloads": 15
     },
     {
       "id": "suan-gua",
@@ -322,6 +299,64 @@
       "readme": "# 算卦 suan-gua\n\n**一句话卖点**：有人想算一卦，插件真的摇六爻起卦——本卦、动爻、变卦、吉凶由插件掷出，四段断语由模型照着对方具体那件事写。\n\n## 能做什么\n\n- **真摇一卦**：三枚铜钱掷六次，自初爻到上爻，老阴老阳为动爻，有动爻就自动推变卦。群里说「帮我算一卦，明天面试」，回来就是「第12卦 天地否·凶」加「六二、九五动 → 变卦：天水讼」。\n- **四段断语**：卦象 → 不宜 → 解决方案（三道符）→ 补充。卦象全是既成事实，模型只按对方的事写成话；默认一条消息发完，最多 2 条。\n- **卦史**：起卦时说了是谁，这一卦就记进那个人的卦史，新的在前；「我上次算的什么卦」随时能查。\n- **两种口吻**：默认道长腔（贫道、符、玉简、拂尘、照妖镜），也能切成正经话术，四段结构不变。\n\n## 群里怎么问\n\n- 「@Bot 算卦」\n- 「我游戏报错了帮我算一卦」\n- 「帮我算一卦，明天面试」\n\n## 配置（可选）\n\n- `enabled` —— 关掉后这两个工具直接报错；默认开。代价：卦史还在，只是既算不了也查不了。\n- `tone` —— 道长腔或正经话术，默认道长腔。代价：只换口吻不换卦，两种口吻的卦与吉凶完全一样。\n- `recordHistory` —— 是否记卦史，默认记。代价：每次起卦最多一次读一次写；关掉后不碰存档，卦史永远查不到。\n- `historyPerUser` —— 每人留几卦，默认 10（1–20）。代价：留得多容易触发按「最久没算卦」淘汰整个用户；调小后老卦真没了。\n\n## 边界\n\n- **不联网、不写文件**：只用 node 内置模块，卦史走宿主的 storage，插件自己一个字节都不落盘。\n- **不保证灵验**：这是娱乐，卦是真随机摇的，不构成任何建议，别拿它替代专业意见。\n- **卦象不可改**：卦序、卦名、动爻、变卦、评级都由插件掷出，模型不许改、不许另算一卦、不许把凶说成吉。\n- **不传 who 就不记**：没记名的卦不进任何人的卦史；存档不可用时会明说「这次没记上」，不假装记好了。\n- **红线不做**：成人向、政治、真人隐私、医疗诊断、投资决策一概不接。\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/suan-gua/`。\n",
       "size": 35792,
       "updatedAt": "2026-10-22"
+    },
+    {
+      "id": "translate",
+      "name": "翻译",
+      "version": "1.0.0",
+      "description": "把一句话或一小段文本翻成另一种语言（中/英/日/韩互译），走 MyMemory 公开接口，不需要 Key",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/translate",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "官方",
+        "生活"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "config"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/translate-1.0.0.tar.gz",
+      "sha256": "dd26e12b1f41b9ca860804568d77e50e1ed5c9832d537461b4d35d361864a659",
+      "icon": "",
+      "category": "生活",
+      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# 翻译 translate\n\n**这句英文什么意思**、**帮我翻成日语** —— 中 / 英 / 日 / 韩互译。\n走 MyMemory 公开接口，**不需要 Key**（DeepL / 百度 / 腾讯那几家都要）。\n\n## 能做什么\n\n- **四个语种互译**：中（`zh-CN`）、英（`en`）、日（`ja`）、韩（`ko`）\n- **不用指定源语言**：只给原文和目标语言，它自己判断\n- **一次一小段**：上游按**字节**限长 500 字节（约 166 个汉字，或 500 个英文/数字），超了会提示分段\n\n## 群里怎么问\n\n- 「把『今天真热』翻成日语」\n- 「这句英文什么意思：It works on my machine」\n- 「帮我翻成英文：明天下午三点开会，改到 404」\n\n## 配置（可选）\n\n- `defaultTo` —— 没说目标语言时用哪个，默认 `zh-CN`。想默认中译英就改成 `en`\n\n```json\n{ \"plugins\": { \"settings\": { \"translate\": { \"defaultTo\": \"en\" } } } }\n```\n\n## 边界\n\n- **译文质量有限**：MyMemory 是公开的免费记忆库，专业内容请人工校对\n- 它有个已知的坑：**有时会把原文原样返回**（HTTP 200、不报错）。这种情况结果里带 `warning`，\n  不会把「没翻」讲成「翻完了」\n- 匿名额度按天算，用完当天不可用，第二天恢复\n- 只读，不能发言\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/translate/`。\n",
+      "size": 5413,
+      "updatedAt": "2026-10-17",
+      "downloads": 9
+    },
+    {
+      "id": "weather",
+      "name": "天气",
+      "version": "1.0.0",
+      "description": "查一个城市现在的天气与未来三天（最高/最低温、降水概率、天气现象），走 Open-Meteo 公开接口，不需要 Key",
+      "author": "sakurawwwxh",
+      "homepage": "https://github.com/sakurawwwxh/qq-agent-plus/tree/main/examples/plugins/weather",
+      "apiVersion": 1,
+      "minVersion": "0.8.5",
+      "tags": [
+        "官方",
+        "生活"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "config"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/weather-1.0.0.tar.gz",
+      "sha256": "08fd0e0341cbd5cc3988fda9ae0484746541d8fee81ea0affa0f98c2f66daf9c",
+      "icon": "",
+      "category": "生活",
+      "changelogUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases",
+      "readmeUrl": "",
+      "readme": "# 天气 weather\n\n**问一句就有答案**：上海今天要不要带伞、Tokyo 明天冷不冷。\n数据来自 Open-Meteo 公开接口，**不需要 Key**，装上就能用。\n\n## 能做什么\n\n- **今天的实况**：温度、体感、天气现象、湿度、风速，以及今天的最高/最低温与降水概率\n- **未来三天**：每天的最高 / 最低温与降水概率（从明天起算）\n- **随口问**：不说城市就用配置里的默认城市\n- **城市名**：中国城市用中文没问题；**境外城市请用英文名**（Tokyo / New York / Seoul）—— Open-Meteo 的中文地理编码只收录了中国城市，查「东京」会匹配到江苏的一个村子\n\n## 群里怎么问\n\n- 「上海今天要带伞吗」\n- 「Tokyo 未来三天冷不冷」\n- 「北京现在几度」\n\n## 配置（可选）\n\n- `defaultCity` —— 没说城市时用哪个，默认 `Beijing`\n\n```json\n{ \"plugins\": { \"settings\": { \"weather\": { \"defaultCity\": \"上海\" } } } }\n```\n\n## 边界\n\n- **不能在群里自己发言**：没有 `send` 能力；想每天早上定时播报要等 v1.1\n- 只读：不写任何东西。请求经宿主（内网地址被拦、有体积上限与超时）\n- 不缓存：每次都是现查，所以数据是最新的\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/weather/`。\n",
+      "size": 4591,
+      "updatedAt": "2026-10-17",
+      "downloads": 27
     }
   ]
 }
