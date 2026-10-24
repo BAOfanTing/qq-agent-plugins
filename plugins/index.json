@@ -1,7 +1,7 @@
 {
   "version": 1,
   "note": "qq-agent-plus 的官方插件索引。控制台「设置 → 插件」默认从这个文件读可安装的插件（宿主侧 plugins.indexUrls / plugins.indexUrl 可改）。字段：必填 id / version / sha256 / 下载地址（downloadUrl、tarball、url 三个名字任选其一，按这个顺序取第一个）；可选 name / description / author / homepage / tags / capabilities / apiVersion / minVersion / revoked。apiVersion 与 minVersion 对不上的条目照样列出来，只是标成「本机装不了」并说明原因。**sha256 是必填**：包先按它校验再换入，所以即使走镜像/CDN，内容被换过也一定会被发现。",
-  "updatedAt": "2026-10-20",
+  "updatedAt": "2026-10-24",
   "plugins": [
     {
       "id": "bilibili",
@@ -216,12 +216,12 @@
     {
       "id": "pixiv-illust",
       "name": "Pixiv 来张图",
-      "version": "1.0.1",
-      "description": "按角色/关键词搜 Pixiv 插画，返回 PID、标题、作者、标签与可直接打开的图链；给过的不会再给第二次，取不到图自动换下一张",
+      "version": "2.0.0",
+      "description": "按角色/关键词搜 Pixiv 插画，群里直接把图发出来（私聊给图链）；带 PID 去重、分级过滤、取不到图自动换下一张，分级可按群设",
       "author": "Daoguan-king",
       "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
+      "apiVersion": 2,
+      "minVersion": "0.9.5",
       "tags": [
         "社区",
         "媒体"
@@ -230,17 +230,20 @@
         "tools",
         "http",
         "config",
-        "storage"
+        "storage",
+        "media",
+        "send",
+        "log"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/pixiv-illust-1.0.1.tar.gz",
-      "sha256": "7dca2856ff5fa60887e329dfe075efe9afccbe22b28abfd73c87fe321ca7e5c6",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/pixiv-illust-2.0.0.tar.gz",
+      "sha256": "3c76e95f8d4f4eccc7e62b40f94b1f3abaa67b6a5e20f2164ca212b0a189cdb4",
       "icon": "",
       "category": "媒体",
       "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# Pixiv 来张图 pixiv-illust\n\n**「来张初音ミク的图」**：按角色 / 关键词搜 Pixiv 插画，返回 PID、标题、作者、标签、分级和\n可直接打开的图链。给过的作品不会再给第二次，取不到图的自动换下一张。\n搜索走 `api.lolicon.app`、取图走 `i.pixiv.re` 反代 —— **不需要代理、不需要 Key**。\n\n## 能做什么\n\n- **按角色 / 标签搜**：日文原标签命中率最高（初音ミク / オリジナル / 猫耳）\n- **直接给作品**：贴 pixiv 作品链接或给作品号，跳过搜索只回这一张的图链\n- **PID 去重**：给过的作品记在 `plugin-data/pixiv-illust/`，同一个关键词再问会换别的图，重装也不丢\n- **取不到图自动换下一张**：候选先探一次图链，非 200 就拉黑（默认 7 天）并换备选\n- **分级过滤**：全年龄 / R18 / R18G，默认只出全年龄\n\n## 群里怎么问\n\n- 「来张初音ミク的图」\n- 「有没有猫耳的插画」\n- 「这张图的原图链接」+ pixiv 作品链接\n\n## 配置（可选）\n\n- `ratings` —— 允许的分级，默认 `[\"safe\"]`；可多选 `safe` / `r18` / `r18g`，只有勾上的档才会给\n- `maxCount` —— 一次最多给几张，默认 `2`（上限 5）\n- `excludeAI` —— 排除 AI 生成的作品，默认关\n- `proxyUrl` —— 只有切到 pixiv.net 后端才需要，内置接口不用代理\n\n```json\n{ \"plugins\": { \"settings\": { \"pixiv-illust\": { \"ratings\": [\"safe\"], \"maxCount\": 2 } } } }\n```\n\n## 边界\n\n- **它不代发图片，只给图链**：插件 v1 没有发图能力，图要自己点开\n- 链接在 QQ 里可能不自动识别，复制到浏览器打开更稳\n- 只读：不点赞、不收藏、不写任何东西\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/pixiv-illust/`。",
-      "size": 12609,
-      "updatedAt": "2026-10-19"
+      "readme": "# Pixiv 来张图 pixiv-illust\n\n**「来张初音ミク的图」**：按角色 / 关键词搜 Pixiv 插画，群里**直接把图发出来**，私聊给图链。\n给过的作品不会给第二次；被作者删掉 / 限制访问的会自动换下一张。不需要代理、不需要 Key。\n\n## 能做什么\n\n- **群里真发图**：走宿主的媒体通路，不是丢一条链接让用户自己点\n- **按角色 / 标签搜**：日文原标签最准（初音ミク / 猫耳 / オリジナル）\n- **贴作品链接或给作品号**就能直接取那一张，跳过搜索\n- **给过的不会再给**，作品被删会自动换下一张\n- **分级可按群设**：全年龄 / R18 / R18G，只有主人能改\n\n## 群里怎么问\n\n- 「来张初音ミク的图」\n- 「有没有猫耳的插画」\n- 「这个群只发全年龄」（主人）\n\n## 配置（可选）\n\n- sendImages —— 是否直接发图，默认开；关掉就只给图链\n- sendMode —— auto / forward / host，默认 auto（宿主发不了自动改转发）\n- allowAdult / allowR18G —— 分级开关，默认都关，只出全年龄\n- maxCount —— 一次几张，默认 2\n\n## 边界\n\n- **只能发到群聊**：私聊与控制台只给图链，而 QQ 里链接通常点不开，要提醒用户复制到浏览器\n- **协议端与宿主不同容器时宿主发文件会失败**（NapCat 报 ENOENT realpath），插件会自动改成给转发指令，\n  由模型调内置 send_group_file 让协议端自己去取图；**首次可能报一次错，属正常探路**\n- **分级按标签只升不降**：实测有作品标签带 R-18 但接口说不是 R18，宁可少出几张\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。",
+      "size": 16445,
+      "updatedAt": "2026-10-24"
     },
     {
       "id": "rss",
