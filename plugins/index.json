@@ -70,12 +70,12 @@
     {
       "id": "gacha",
       "name": "抽卡",
-      "version": "1.0.0",
-      "description": "群友说「抽一张卡」就抽一张：六级卡池 N/R/SR/SSR/UR/???（★1-★6，概率固定不可改）+ 词条，支持十连与个人图鉴。",
+      "version": "1.1.1",
+      "description": "有人「抽一张卡」「来张卡」时抽一张卡给他：等级、星级、概率由插件固定掷出（N/R/SR/SSR/UR/???），卡名与词条按设置交给模型自创或用内置素材；支持十连、自创卡回执与按人记录的抽卡图鉴。零依赖、不联网、不发图。",
       "author": "Daoguan-king",
       "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
-      "apiVersion": 1,
-      "minVersion": "0.8.5",
+      "apiVersion": 2,
+      "minVersion": "0.9.5",
       "tags": [
         "社区",
         "娱乐",
@@ -87,14 +87,13 @@
         "config",
         "log"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gacha-1.0.0.tar.gz",
-      "sha256": "644a5dc07829dacf2c653214ea44e7844201dc25c69c2f11b0e8159a01a1d585",
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/gacha-1.1.1.tar.gz",
+      "sha256": "22cbe8a76ce487635c881d3d8c6f987dfbf42a490551098e0b27313a480f9577",
       "icon": "",
       "category": "娱乐",
       "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases",
       "readmeUrl": "",
-      "readme": "# 抽卡 gacha\n\n群友说「抽一张卡」就抽一张：**等级 + 星级 + 卡名 + 词条**。六级卡池概率固定，\n插件只掷骰子，卡名与词条由模型创作。零依赖、单文件、**不联网、不写文件**，\n图鉴与统计走宿主的 `cap.storage`。\n\n## 能做什么\n\n- **抽卡**：`N` / `R` / `SR` / `SSR` / `UR` / `???` 六级，概率固定 52% / 26% / 13% / 6% / 2.4% / 0.6%，星级 ★1–★6\n- **多连**：一次最多 10 张，逐张出等级与词条\n- **个人图鉴**：抽到的稀有卡与自创卡记在 `who` 名下（每人 24 条），随时用 `card_dex` 查\n- **两套调性**：`tone=yang`（默认，阴阳怪气，只损事 / 物 / 泛化身份）/ `tone=neutral`（日常抽象）\n\n## 群里怎么问\n\n- 「抽一张卡」「来张卡」「@Bot 抽卡」\n- 「十连」「帮我抽五张」\n- 「看看我的图鉴」\n\n## 配置（可选）\n\n- `tone` —— 卡片风格，默认 `yang`；改 `neutral` 回到日常风格，不影响概率\n- `flavorMode` —— 卡名与词条谁写，默认 `free`（模型自创，最像活人）；`extend` 用插件给的卡名，`off` 全照卡池\n- `maxCount` —— 一次最多几张，默认 `10`\n- `recordHistory` —— 是否记个人图鉴与全局统计，默认开\n\n## 边界\n\n- **概率不可改**：整数万分比写死（5200 / 2600 / 1300 / 600 / 240 / 60，合计 10000）\n- **只能抽卡**：不发言、不发图、不联网、不写文件\n- **阴阳有红线**：不点名真人、不碰政治人物、不做群体歧视、不写色情；`yang` 的尺度由模型把握，插件执行时无法判定\n- 图鉴受宿主存储上限约束（单值 32KB / 总量 256KB），超了只降级不失败\n\n## 装\n\n控制台左侧「插件」→ 安装 → 启用。手工：把本目录拷到 `$DATA_DIR/plugins/gacha/`。",
-      "downloads": 83
+      "readme": "# 抽卡 gacha\n\n**一句话卖点**：群里有人说「抽一张卡」，它就掷出等级、卡名与词条——默认还是阴阳怪气那一版。\n\n## 能做什么\n- 六级概率固定：N ★ 52%、R ★★ 26%、SR ★★★ 13%、SSR ★★★★ 6%、UR ★★★★★ 2.4%、??? ★★★★★★ 0.6%\n- 默认阴阳调性：只损「事、物、身份梗」，不点名真人、不碰政治人物与群体歧视\n- 卡名与词条默认交给模型自创（`flavorMode=free`），`save_card` 顺手记进个人图鉴\n- 十连一次最多 10 张；`card_dex` 查个人图鉴与全局热门榜\n- 零依赖、不联网、不发图；抽卡存档走宿主的 storage\n\n## 群里怎么问\n- 「抽一张卡」「来张卡」「@Bot 抽卡」\n- 「十连」\n- 「我的图鉴」「我抽到过什么好东西」\n\n## 配置\n控制台 → 插件 → 抽卡 → 设置，六个字段：`enabled`、`tone`（阴阳/日常）、`flavorMode`（off/extend/free）、`count`、`maxCount`、`recordHistory`。保存后宿主会重启这个插件进程，改动立即生效。\n\n## 边界\n- 阴阳的对象由模型把握：插件只掷等级、过滤池内文案、约束词库与提示词，不会审核模型现写的句子；发现越界就把 `tone` 切回 `neutral` 或关掉插件\n- 图鉴按人存，最多 200 人、每人 24 条稀有/自创记录，超了按最久没抽淘汰\n- 需要宿主 apiVersion 2（不低于 0.9.5）\n\n## 装\n控制台左侧「插件」→ 安装 → 启用。手工：把包内三个文件放进数据目录的 `plugins/gacha/`。"
     },
     {
       "id": "gh-activity",
