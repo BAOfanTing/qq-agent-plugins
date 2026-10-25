@@ -20,7 +20,8 @@ jobs:
           node-version: "22.x"
       - run: node scripts/update-downloads.mjs
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 优先用带 bypass 的 STATS_TOKEN；没有 secret 时退回 GITHUB_TOKEN（会被分支保护挡下）
+          GH_TOKEN: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
       # 有变化就提交（[skip ci] 避免再触发一轮 verify：计数变化不影响内容校验）
       - name: commit if changed
         run: |

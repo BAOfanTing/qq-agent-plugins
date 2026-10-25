@@ -67,5 +67,9 @@ if (!changed) {
   process.exit(0);
 }
 index.updatedAt = new Date().toISOString().slice(0, 10);
-fs.writeFileSync(indexPath, `${JSON.stringify(index, null, 2)}\n`);
+// 保留仓库现有 EOL：index.json 是 CRLF，直接写 LF 会让下一次成功提交变成整文件翻红
+//（GH006 修好后第一条 stats 提交就是几百行全 diff）。先读原文判断，再按原格式写回。
+const original = fs.readFileSync(indexPath, 'utf8');
+const eol = original.includes('\r\n') ? '\r\n' : '\n';
+fs.writeFileSync(indexPath, JSON.stringify(index, null, 2).replace(/\n/g, eol) + eol);
 console.log(`✓ 已更新 ${changed} 条下载量（仓库 ${repo}）`);
