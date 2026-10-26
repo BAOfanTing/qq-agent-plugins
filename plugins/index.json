@@ -436,6 +436,39 @@
       "readme": "# e926 寻图 e926-search\n\n**一句话卖点**：在群里搜 e926（e621 的全年龄镜像）的作品、查作者有没有更新、随机来一张、按作品号直查。默认只出全年龄内容，不需要代理、不需要登录。\n\n## 能做什么\n- 搜作品：「在e上搜索 fox」返回作品号、作品页链接、作者、标签、评分与尺寸（标签用英文，越短命中越多）\n- 查更新：「e 上的 kenuwu 有更新吗」——每位作者记一条水位线，第一次只建基线，之后告诉你多了几条\n- 随机来一张：「来个随机的 e」会避开本会话最近发过的 200 个作品\n- 直查作品：`6806819` 或整条作品链接都认，额外给出去标记的简介与来源链接\n- 群里真发图：打开开关后，随机与直查直接把图发到群里（搜索与查更新只给链接）\n\n## 群里怎么问\n- 「在e上搜索 fox solo」\n- 「e 上的 kenuwu 作者有更新吗」\n- 「来个随机的 e」\n\n## 配置（可选）\n- `site` —— `e926`（默认，全年龄）或 `e621`；`allowAdult` 默认关，只有「站点是 e621 且它打开」才放开成人向\n- `sendImages` / `imageQuality` / `maxImageMb` —— 要不要发图、发哪一档（默认 `sample`）、单张上限（默认 8MB）\n- `sendMode` —— 默认 `auto`：宿主发不了文件时自动改成「让协议端自己去取」\n- `defaultCount` / `excludeTags` / `throttleMs` —— 默认条数、永久排除的标签、请求间隔（默认 1 秒）\n- `transport` —— 默认 `auto`；只有宿主通道被 Cloudflare 挑战时才改用插件自有的 HTTP/2 通道。**宿主 0.9.10 起一律走宿主通道，不用管这一项**\n- `username` / `apiKey` —— 可留空（公开作品不需要）。填了之后设置页的「检测登录」会实测一次：200 显示登录有效，401 说明 Key 或用户名不对\n\n## 边界\n- 默认全年龄：站点是 e926 或成人开关关着一律只出 `rating:s`，本地还会再筛一遍。看成人向要两步：站点切 e621 + 打开成人开关\n- 只发群聊，私聊与控制台只给链接；原图常有十几 MB，所以优先发 `sample` 档\n- 站点硬限流 2 请求/秒，插件默认 1 请求/秒，别连着追问\n- `title` 是插件按简介/角色/标签拼出来的，不是官方标题；也不给作品总数（计数接口匿名不可用）\n- e621.net 在部分网络下连不上（宿主不吃系统代理），插件会直接说明，切回 e926 即可\n- 容器化部署要把宿主的 `data/plugin-data` 按相同绝对路径挂进协议端容器，否则发图会退化成「转发」；`media` 目录的属主必须是宿主进程用户（用 root 手建目录会 `EACCES`）\n- 不写文件、不上传，状态只存在宿主存储里；没有定时任务，也不会主动发言\n\n## 装\n控制台左侧「插件」→ 安装 → 启用。手工装：把 `README.md`、`index.mjs`、`plugin.json` 拷到 `$DATA_DIR/plugins/e926-search/`。",
       "size": 40752,
       "updatedAt": "2026-10-26"
+    },
+    {
+      "id": "meme-finder",
+      "name": "表情包搜发",
+      "version": "1.0.9",
+      "description": "群聊里按情绪搜表情包、以群文件发出；来源默认「梗鲸+Giphy」都查（梗鲸中文、Giphy 英文自动映射），只发群聊。Giphy 无 Key 时抓网页（无分级过滤）并先发 200px 小档；插件不自带代理，国内网络到 api.giphy.com 常被 DNS 污染或阻断时会自动改抓网页，要用 API 需自配代理。",
+      "author": "Daoguan-king",
+      "homepage": "https://github.com/Daoguan-king/qq-agent-plugins",
+      "apiVersion": 2,
+      "minVersion": "0.9.10",
+      "tags": [
+        "社区",
+        "媒体"
+      ],
+      "capabilities": [
+        "tools",
+        "http",
+        "config",
+        "storage",
+        "media",
+        "send",
+        "log",
+        "secrets"
+      ],
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/meme-finder-1.0.9.tar.gz",
+      "sha256": "0314b7e695cc312bcac3090b4d8df071ecf90577c5e405987180dfb1d770ce49",
+      "icon": "",
+      "category": "媒体",
+      "changelogUrl": "https://github.com/Daoguan-king/qq-agent-plugins/releases/tag/meme",
+      "readmeUrl": "",
+      "readme": "# 表情包搜发 meme-finder\n\n**一句话卖点**：群聊到情绪高点时，机器人自己搜张梗图当群文件发出来。\n\n## 能做什么\n- 按情绪找图：「无语」「委屈」「摸鱼」扩成同义词组后按梗名/角色打分。\n- 按角色挑：梗鲸有 DeepSeek娘、Claude娘 等 12 个角色。\n- 先看菜单：`list_memes` 只列编号，点第 3 张再用 `send_pick` 发。\n\n## 群里怎么问\n- 「来张无语的」「笑死，配张图」\n- 「有没有 Claude娘 的」「先列几张，我挑一张」\n\n## 配置\n- `site` —— 图库来源：梗鲸 / Giphy / 都要，**默认都要**。\n- `animFormat` —— 动图格式，默认 gif（QQ 不播动图 webp，想更省流量可切 webp）。\n- `maxCount` 一次最多几张（1-3，默认 1）；`maxPerHour` / `maxPerDay` 每群额度（默认 6 / 30）。\n- `catalogRefreshHours` 梗鲸刷新间隔（默认 12h）。\n- `giphyApiKey` / `giphyRating` —— 填了才走官方接口、才有分级过滤（默认 pg-13）；`giphyScrape` 管无 Key 时是否抓页。\n\n## 边界\n- **不自带代理**：国内网络到 api.giphy.com 常被 DNS 污染或 IP 阻断，插件会自动改抓网页（内容无分级过滤）；要用 API 得自己给宿主配代理。\n- **Giphy 用英文更准**：常见中文情绪词自动映射，梗鲸仍用中文。\n- 发出去是**群文件**不是内联图片；只能发群里，私聊回「表情包只能发到群里」。\n- 未配 Key 时默认先发 200px 小档（Giphy 只有 200px 与全尺寸两档），保证慢网也发得出；全尺寸 gif 超 8MB 自动改发 200w.gif。\n- 慢网已知残留：gif 下完了但回执超时，会改发 webp（QQ 里不动），仍发得出。\n- 发不出去时只给图片转发指令，不退成 mp4；容器化部署首次发图可能报一次错，失败后自动转发。\n- 梗鲸可能改版；内置快照，刷新失败降级。\n\n## 装\n控制台左侧「插件」→ 安装 → 启用；手工：拷到 `$DATA_DIR/plugins/meme-finder/`。\n",
+      "size": 97552,
+      "updatedAt": "2026-10-26"
     }
   ]
 }
