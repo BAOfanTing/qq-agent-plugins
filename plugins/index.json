@@ -513,8 +513,8 @@
     {
       "id": "sing",
       "name": "点歌唱歌",
-      "version": "1.0.0",
-      "description": "点歌唱歌：群里说「用语音唱一首X」，机器人用你自己训练的音色翻唱并发 QQ 语音条；说「点歌唱一首X」发 mp3 群文件。⚠️ 换声模型要跑在使用者自己的电脑上（仓库里有网关与 RVC 流程），服务器只做转发。",
+      "version": "1.0.1",
+      "description": "点歌唱歌：群里说「用语音唱一首X」，机器人用你自己训练的音色翻唱并发 QQ 语音条，默认唱整首（长歌自动按 30 秒分段换声再拼回，4 分钟约 82 秒出结果）；说「点歌唱一首X」发 mp3 群文件。⚠️ 换声模型要跑在使用者自己的电脑上，服务器只做转发。",
       "author": "BAofanTing",
       "homepage": "https://github.com/BAOfanTing/qq-agent-plus-singPlugin",
       "apiVersion": 2,
@@ -534,8 +534,8 @@
         "media",
         "send"
       ],
-      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/sing-1.0.0.tar.gz",
-      "sha256": "79a7bee0b8fa3d995409654ca471f4c657ca8f4804616c2cde2cb65d2e5f92ee"
+      "downloadUrl": "https://github.com/sakurawwwxh/qq-agent-plugins/releases/download/packages/sing-1.0.1.tar.gz",
+      "sha256": "a25851cc291ac8e7117490065b186007355839b22ac5587ae7efb0e67585c05f"
     }
   ]
 }
